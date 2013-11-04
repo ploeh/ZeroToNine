@@ -39,3 +39,26 @@ module VersioningTests =
 
         let expected = Version.Parse exp
         Assert.Equal(expected, actual)
+
+    [<Theory>]
+    [<InlineData(Rank.Major, "", "")>]
+    [<InlineData(Rank.Major, "ploeh", "ploeh")>]
+    [<InlineData(Rank.Major, """[assembly:AssemblyVersion("1.0.0.0")]""", """[assembly:AssemblyVersion("2.0.0.0")]""")>]
+    [<InlineData(Rank.Major, """[assembly: AssemblyVersion("1.0.0.0")]""", """[assembly: AssemblyVersion("2.0.0.0")]""")>]
+    [<InlineData(Rank.Minor, """[assembly:  AssemblyVersion("1.0.0.0")]""", """[assembly:  AssemblyVersion("1.1.0.0")]""")>]
+    [<InlineData(Rank.Major, """  [assembly:AssemblyVersion("2.0.0.0")]""", """  [assembly:AssemblyVersion("3.0.0.0")]""")>]
+    [<InlineData(Rank.Build, """[  assembly:AssemblyVersion("2.0.0.0")]""", """[  assembly:AssemblyVersion("2.0.1.0")]""")>]
+    [<InlineData(Rank.Minor, """[assembly  :AssemblyVersion("2.2.0.0")]""", """[assembly  :AssemblyVersion("2.3.0.0")]""")>]
+    [<InlineData(Rank.Major, """[assembly: AssemblyVersion  ("2.2.0.0")]""", """[assembly: AssemblyVersion  ("3.0.0.0")]""")>]
+    [<InlineData(Rank.Build, """[assembly: AssemblyVersion(  "1.2.0.0")]""", """[assembly: AssemblyVersion(  "1.2.1.0")]""")>]
+    [<InlineData(Rank.Revision, """[assembly: AssemblyVersion("1.2.0.0"  )]""", """[assembly: AssemblyVersion("1.2.0.1"  )]""")>]
+    [<InlineData(Rank.Major, """[assembly: AssemblyVersion("1.2.0.0")  ]""", """[assembly: AssemblyVersion("2.0.0.0")  ]""")>]
+    [<InlineData(Rank.Major, """[assembly: AssemblyVersion("1.2.0.0")]  """, """[assembly: AssemblyVersion("2.0.0.0")]  """)>]
+    [<InlineData(Rank.Major, """[assembly: AssemblyFileVersion("1.0.0.0")]""", """[assembly: AssemblyFileVersion("2.0.0.0")]""")>]
+    let IncrementInTextReturnsCorrectResult
+        (rank: Rank)
+        (text : string)
+        (expected : string) =
+        
+        let actual = IncrementAssemblyAttribute rank text
+        Assert.Equal<string>(expected, actual)
