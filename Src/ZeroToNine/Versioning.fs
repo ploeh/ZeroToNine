@@ -22,7 +22,7 @@ module Versioning =
             Version(version.Major, version.Minor, version.Build, version.Revision + 1)
 
     let IncrementAssemblyAttribute rank text =
-        let regx = Regex("""(^\s*\[\s*assembly\s*:\s*Assembly(?:File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*]\s*$)""")
+        let regx = Regex("""(^\s*\[<?\s*assembly\s*:\s*Assembly(?:File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?]\s*$)""")
         let m = regx.Match text
         if m.Success then
             let oldVersion = Version(m.Groups.[2].Value)

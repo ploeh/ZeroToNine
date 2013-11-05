@@ -55,6 +55,7 @@ module VersioningTests =
     [<InlineData(Rank.Major, """[assembly: AssemblyVersion("1.2.0.0")  ]""", """[assembly: AssemblyVersion("2.0.0.0")  ]""")>]
     [<InlineData(Rank.Major, """[assembly: AssemblyVersion("1.2.0.0")]  """, """[assembly: AssemblyVersion("2.0.0.0")]  """)>]
     [<InlineData(Rank.Major, """[assembly: AssemblyFileVersion("1.0.0.0")]""", """[assembly: AssemblyFileVersion("2.0.0.0")]""")>]
+    [<InlineData(Rank.Minor, """[<assembly: AssemblyVersion("3.12.1.0")>]""", """[<assembly: AssemblyVersion("3.13.0.0")>]""")>]
     let IncrementInTextReturnsCorrectResult
         (rank: Rank)
         (text : string)
