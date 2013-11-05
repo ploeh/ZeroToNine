@@ -10,6 +10,7 @@ module ArgsTests =
     [<InlineData("major",    Rank.Major)>]
     [<InlineData("minor",    Rank.Minor)>]
     [<InlineData("build",    Rank.Build)>]
+    [<InlineData("patch",    Rank.Build)>]
     [<InlineData("revision", Rank.Revision)>]
     let ParseIncementReturnsCorrectResult(rank : string, expectedRank : Rank) =
         let actual = [| "-i"; rank |] |> Args.Parse
