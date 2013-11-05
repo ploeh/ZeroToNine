@@ -6,7 +6,8 @@ open System.IO
 module Program =
 
     let IncrementVersionsInFile rank file =
-        let writeAllLines file lines = File.WriteAllLines(file, lines)
+        let writeAllLines file lines =
+            File.WriteAllLines(file, lines, Text.Encoding.UTF8)
 
         File.ReadAllLines file
         |> Array.map (Versioning.IncrementAssemblyAttribute rank)
