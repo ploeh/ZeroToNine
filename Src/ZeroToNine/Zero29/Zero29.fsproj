@@ -45,8 +45,16 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Args.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZeroToNine\ZeroToNine.fsproj">
+      <Name>ZeroToNine</Name>
+      <Project>{1bbd593b-40e4-4ef0-bc98-2832365a4619}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
