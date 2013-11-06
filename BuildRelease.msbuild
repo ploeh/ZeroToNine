@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="CompleteBuild" ToolsVersion="4.0">
-    <PropertyGroup>
-        <XUnitPath>Src\packages\xunit.runners.1.9.2\tools</XUnitPath>
-    </PropertyGroup>
-    <UsingTask TaskName="xunit" AssemblyFile="$(XUnitPath)\xunit.runner.msbuild.dll" />
-  
-    <!--What to build-->
+  <PropertyGroup>
+    <XUnitPath>Src\packages\xunit.runners.1.9.2\tools</XUnitPath>
+  </PropertyGroup>
+  <UsingTask TaskName="xunit" AssemblyFile="$(XUnitPath)\xunit.runner.msbuild.dll" />
+
+  <!--What to build-->
+  <ItemGroup>
+    <ProjectToBuild Include="Src\*.sln" />
+  </ItemGroup>
+  <ItemGroup>
+    <BuildOutput Include="Src\Zero29\bin\Release\Zero29.exe" />
+    <BuildOutput Include="Src\Zero29\bin\Release\Zero29.XML" />
+    <BuildOutput Include="Src\ZeroToNine\bin\Release\Ploeh.ZeroToNine.dll" />
+    <BuildOutput Include="Src\ZeroToNine\bin\Release\Ploeh.ZeroToNine.XML" />
+  </ItemGroup>
+
+  <!--Clean-->
+  <Target Name="CleanAll" DependsOnTargets="CleanDebug;CleanRelease" />
+  <Target Name="CleanDebug">
+    <MSBuild Projects="@(ProjectToBuild)" Targets="Clean" Properties="Configuration=Debug" />
+  </Target>
+  <Target Name="CleanRelease">
+    <MSBuild Projects="@(ProjectToBuild)" Targets="Clean" Properties="Configuration=Release" />
+  </Target>
+
+  <!--Compile-->
+  <Target Name="Build" DependsOnTargets="CleanAll">
+    <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release" />
+  </Target>
+
+  <!--Test-->
+  <Target Name="Test" DependsOnTargets="Build">
     <ItemGroup>
-        <ProjectToBuild Include="Src\*.sln" />
-    </ItemGroup>
-    <ItemGroup>
-        <BuildOutput Include="Src\Zero29\bin\Release\Zero29.exe" />
-        <BuildOutput Include="Src\Zero29\bin\Release\Zero29.XML" />
-        <BuildOutput Include="Src\ZeroToNine\bin\Release\Ploeh.ZeroToNine.dll" />
-        <BuildOutput Include="Src\ZeroToNine\bin\Release\Ploeh.ZeroToNine.XML" />
+      <TestAssemblies Include="**\bin\Release\*Tests.dll" />
     </ItemGroup>
 
-    <!--Clean-->
-    <Target Name="CleanAll" DependsOnTargets="CleanDebug;CleanRelease" />
-    <Target Name="CleanDebug">
-        <MSBuild Projects="@(ProjectToBuild)" Targets="Clean" Properties="Configuration=Debug" />
-    </Target>
-    <Target Name="CleanRelease">
-        <MSBuild Projects="@(ProjectToBuild)" Targets="Clean" Properties="Configuration=Release" />
-    </Target>
+    <xunit Assemblies="@(TestAssemblies)" />
+  </Target>
 
-    <!--Compile-->
-    <Target Name="Build" DependsOnTargets="CleanAll">
-        <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release" />
-    </Target>
+  <!--Release-->
+  <PropertyGroup>
+    <ReleaseFolder>Release</ReleaseFolder>
+  </PropertyGroup>
+  <Target Name="DeleteReleaseFolder">
+    <RemoveDir Directories="$(ReleaseFolder)" />
+  </Target>
+  <Target Name="MakeReleaseFolder" DependsOnTargets="DeleteReleaseFolder">
+    <MakeDir Directories="$(ReleaseFolder)" Condition="!Exists($(ReleaseFolder))" />
+  </Target>
+  <Target Name="CopyToReleaseFolder" DependsOnTargets="Test">
+    <Copy SourceFiles="@(BuildOutput)" DestinationFolder="$(ReleaseFolder)" />
+  </Target>
 
-    <!--Test-->
-    <Target Name="Test" DependsOnTargets="Build">
-        <ItemGroup>
-            <TestAssemblies Include="**\bin\Release\*Tests.dll" />
-        </ItemGroup>
-
-        <xunit Assemblies="@(TestAssemblies)" />
-    </Target>
-
-    <!--Release-->
-    <PropertyGroup>
-        <ReleaseFolder>Release</ReleaseFolder>
-    </PropertyGroup>
-    <Target Name="DeleteReleaseFolder">
-        <RemoveDir Directories="$(ReleaseFolder)" />
-    </Target>
-    <Target Name="MakeReleaseFolder" DependsOnTargets="DeleteReleaseFolder">
-        <MakeDir Directories="$(ReleaseFolder)" Condition="!Exists($(ReleaseFolder))" />
-    </Target>
-    <Target Name="CopyToReleaseFolder" DependsOnTargets="Test">
-        <Copy SourceFiles="@(BuildOutput)" DestinationFolder="$(ReleaseFolder)" />
-    </Target>
-
-    <Target Name="CompleteBuild" DependsOnTargets="CopyToReleaseFolder" />
+  <Target Name="CompleteBuild" DependsOnTargets="CopyToReleaseFolder" />
 </Project>
