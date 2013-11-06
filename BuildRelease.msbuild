@@ -6,7 +6,7 @@
     <UsingTask TaskName="xunit" AssemblyFile="$(XUnitPath)\xunit.runner.msbuild.dll" />
   
     <ItemGroup>
-        <ProjectToBuild Include="*.sln" />
+        <ProjectToBuild Include="Src\*.sln" />
     </ItemGroup>
 
     <Target Name="CleanAll" DependsOnTargets="CleanDebug;CleanRelease" />
