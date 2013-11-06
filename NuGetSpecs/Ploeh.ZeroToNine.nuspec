@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ZeroToNine</id>
+    <version>0.1.0</version>
+    <authors>Mark Seemann</authors>
+    <owners>Mark Seemann</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ZeroToNine is a library that help to manage explicit versioning for C# and F# projects, by automating editing of version information in AssemblyInfo files.</description>
+    <copyright>Copyright Mark Seemann 2013</copyright>
+    <tags>ContinuousIntegration Versioning Build</tags>
+  </metadata>
+  <files>
+    <file src="Ploeh.ZeroToNine.dll" target="lib\net45" />
+    <file src="Ploeh.ZeroToNine.XML" target="lib\net45" />
+  </files>
+</package>
