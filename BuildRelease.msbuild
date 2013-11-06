@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="4.0">
+    <ItemGroup>
+        <ProjectToBuild Include="*.sln" />
+    </ItemGroup>
+
+    <Target Name="CleanAll" DependsOnTargets="CleanDebug;CleanRelease" />
+    <Target Name="CleanDebug">
+        <MSBuild Projects="@(ProjectToBuild)" Targets="Clean" Properties="Configuration=Debug" />
+    </Target>
+    <Target Name="CleanRelease">
+        <MSBuild Projects="@(ProjectToBuild)" Targets="Clean" Properties="Configuration=Release" />
+    </Target>
+
+    <Target Name="Build" DependsOnTargets="CleanAll">
+        <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release" />
+    </Target>
+
+</Project>
