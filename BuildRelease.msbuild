@@ -9,6 +9,7 @@
         <ProjectToBuild Include="Src\*.sln" />
     </ItemGroup>
 
+    <!--Clean-->
     <Target Name="CleanAll" DependsOnTargets="CleanDebug;CleanRelease" />
     <Target Name="CleanDebug">
         <MSBuild Projects="@(ProjectToBuild)" Targets="Clean" Properties="Configuration=Debug" />
@@ -17,10 +18,12 @@
         <MSBuild Projects="@(ProjectToBuild)" Targets="Clean" Properties="Configuration=Release" />
     </Target>
 
+    <!--Compile-->
     <Target Name="Build" DependsOnTargets="CleanAll">
         <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release" />
     </Target>
 
+    <!--Test-->
     <Target Name="Test" DependsOnTargets="Build">
         <ItemGroup>
             <TestAssemblies Include="**\bin\Release\*Tests.dll" />
