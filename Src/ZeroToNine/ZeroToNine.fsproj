@@ -41,6 +41,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.fs" />
     <Compile Include="Versioning.fs" />
   </ItemGroup>
   <PropertyGroup>
