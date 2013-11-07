@@ -53,5 +53,46 @@
     <Copy SourceFiles="@(BuildOutput)" DestinationFolder="$(ReleaseFolder)" />
   </Target>
 
-  <Target Name="CompleteBuild" DependsOnTargets="CopyToReleaseFolder" />
+  <!--NuGet-->
+  <ItemGroup>
+    <NuSpecFiles Include="NuGetSpecs\*.nuspec" />
+  </ItemGroup>
+  <Target Name="CreateTemporaryNuGetSpecFiles">
+    <PropertyGroup>
+      <NuGetOutputFolder>NuGetPackages</NuGetOutputFolder>
+    </PropertyGroup>
+    <RemoveDir Directories="$(NuGetOutputFolder)" />
+    <Copy SourceFiles="@(NuSpecFiles)" DestinationFolder="$(NuGetOutputFolder)">
+      <Output TaskParameter="CopiedFiles" ItemName="TempNuspecFiles" />
+    </Copy>
+  </Target>
+  <Target Name="NuGetPrepare" DependsOnTargets="CreateTemporaryNuGetSpecFiles;CopyToReleaseFolder" Outputs="%(TempNuspecFiles.Identity)">
+    <PropertyGroup>
+      <TempNuspecFilePath>%(TempNuspecFiles.FullPath)</TempNuspecFilePath>
+      <AssemblyFile Condition="Exists('$(ReleaseFolder)\%(TempNuspecFiles.Filename).dll')">$(ReleaseFolder)\%(TempNuspecFiles.Filename).dll</AssemblyFile>
+      <AssemblyFile Condition="Exists('$(ReleaseFolder)\%(TempNuspecFiles.Filename).exe')">$(ReleaseFolder)\%(TempNuspecFiles.Filename).exe</AssemblyFile>
+    </PropertyGroup>
+    <GetAssemblyIdentity AssemblyFiles="$(AssemblyFile)">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyInfo" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <Version>%(AssemblyInfo.Version)</Version>
+      <SemanticVersion>$(Version.Substring(0, $(Version.LastIndexOf('.'))))</SemanticVersion>
+    </PropertyGroup>
+    <XmlPoke XmlInputPath="$(TempNuspecFilePath)"
+             Query="//metadata/version"
+             Value="$(SemanticVersion)" />
+    <XmlPoke XmlInputPath="$(TempNuspecFilePath)"
+             Query="//metadata/dependencies/dependency[contains(@id, 'zerotonine')]/@version"
+             Value="$(SemanticVersion)" />
+  </Target>
+  <Target Name="NuGetPack" DependsOnTargets="NuGetPrepare">
+    <Exec Command="Src\packages\NuGet.CommandLine.2.7.1\tools\nuget.exe pack %(TempNuspecFiles.FullPath) -BasePath $(ReleaseFolder) -OutputDirectory $(NuGetOutputFolder) -NoPackageAnalysis" />
+  </Target>
+  <Target Name="CleanTemporaryNuGetSpecFiles" DependsOnTargets="NuGetPack">
+    <Delete Files="@(TempNuspecFiles)" />
+  </Target>
+
+  <!--Done-->
+  <Target Name="CompleteBuild" DependsOnTargets="CleanTemporaryNuGetSpecFiles" />
 </Project>

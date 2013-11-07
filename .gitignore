@@ -7,6 +7,7 @@ deploy/*
 *.suo
 *.cache
 TestResults/
+NuGetPackages/
 *_mm_cache.bin
 */AutoTest.config
 */AutoTest.config.old
