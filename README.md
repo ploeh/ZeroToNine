@@ -11,6 +11,13 @@ A tool for maintaining .NET Assembly versions across multiple files.
 
 While *Zero29* is the raison d'être for the *ZeroToNine* project, this organization enables other users to reuse the implemnentation logic without having to reference an executable assembly.
 
+### NuGet packages
+
+Signed versions of both *Zero29* and *ZeroToNine* are available via NuGet:
+
+- [Zero29](https://www.nuget.org/packages/Zero29)
+- [ZeroToNine](https://www.nuget.org/packages/ZeroToNine) 
+
 ## Command-line usage
 
 *Zero29* is a command-line utility:
