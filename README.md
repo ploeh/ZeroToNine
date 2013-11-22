@@ -34,7 +34,7 @@ Zero29 <command> [<args>]
 
 Increments all the Assembly Version and Assembly File Version in all `AssemblyInfo.*` files beneath the current working directory.
 
-`build` and `patch` are synonyms. The [Version](http://msdn.microsoft.com/en-us/library/system.version.aspx) class calls the third level *build*, whereas [Semantic Versioning](http://semver.org) calls in *patch*.
+`build` and `patch` are synonyms. The [Version](http://msdn.microsoft.com/en-us/library/system.version.aspx) class calls the third level *build*, whereas [Semantic Versioning](http://semver.org) calls it *patch*.
 
 #### Examples
 
