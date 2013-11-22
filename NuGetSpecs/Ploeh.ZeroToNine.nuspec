@@ -5,9 +5,8 @@
     <version>0.1.0</version>
     <authors>Mark Seemann</authors>
     <owners>Mark Seemann</owners>
-    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
-    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
-    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <licenseUrl>https://github.com/ploeh/ZeroToNine/blob/master/LICENCE</licenseUrl>
+    <projectUrl>https://github.com/ploeh/ZeroToNine</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>ZeroToNine is a library that help to manage explicit versioning for C# and F# projects, by automating editing of version information in AssemblyInfo files.</description>
     <copyright>Copyright Mark Seemann 2013</copyright>
