@@ -26,8 +26,9 @@ module Versioning =
         | _ ->
             Version(version.Major, version.Minor, version.Build, version.Revision + 1)
 
+    let private regx = Regex("""(^\s*\[<?\s*assembly\s*:\s*Assembly(File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?]\s*$)""", RegexOptions.Compiled)
+    
     let TryParse text =
-        let regx = Regex("""(^\s*\[<?\s*assembly\s*:\s*Assembly(File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?]\s*$)""")
         let m = regx.Match text
         if m.Success then
             let attributeType =
