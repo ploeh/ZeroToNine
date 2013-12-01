@@ -44,13 +44,6 @@ module Versioning =
             None
 
     let IncrementAssemblyAttribute rank text =
-        let regx = Regex("""(^\s*\[<?\s*assembly\s*:\s*Assembly(?:File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?]\s*$)""")
-        let m = regx.Match text
-        if m.Success then
-            let oldVersion = Version(m.Groups.[2].Value)
-            let newVersion = oldVersion |> IncrementVersion rank
-            regx.Replace(
-                text,
-                sprintf """$1"%O"$3""" newVersion)
-        else
-            text
+        match TryParse text with
+        | None -> text
+        | Some(pv) -> pv.Version |> IncrementVersion rank |> pv.ToString
