@@ -63,3 +63,34 @@ module VersioningTests =
         
         let actual = IncrementAssemblyAttribute rank text
         Assert.Equal<string>(expected, actual)
+    
+    [<Theory>]
+    [<InlineData("")>]
+    [<InlineData("ploeh")>]
+    let TryParseNoVersionInformationReturnsNone(text : string) =
+        let actual = TryParse text
+        Assert.Equal(None, actual)
+
+    [<Theory>]
+    [<InlineData("""[assembly:AssemblyVersion("1.0.0.0")]""", "1.0.0.0")>]
+    [<InlineData("""[assembly: AssemblyVersion("1.0.0.1")]""", "1.0.0.1")>]
+    [<InlineData("""[assembly:  AssemblyVersion("1.0.0.0")]""", "1.0.0.0")>]
+    [<InlineData("""  [assembly:AssemblyVersion("2.0.0.0")]""", "2.0.0.0")>]
+    [<InlineData("""[  assembly:AssemblyVersion("2.0.0.0")]""", "2.0.0.0")>]
+    [<InlineData("""[assembly  :AssemblyVersion("2.2.0.0")]""", "2.2.0.0")>]
+    [<InlineData("""[assembly: AssemblyVersion  ("2.2.0.0")]""", "2.2.0.0")>]
+    [<InlineData("""[assembly: AssemblyVersion(  "1.2.0.0")]""", "1.2.0.0")>]
+    [<InlineData("""[assembly: AssemblyVersion("1.2.0.0"  )]""", "1.2.0.0")>]
+    [<InlineData("""[assembly: AssemblyVersion("1.2.0.0")  ]""", "1.2.0.0")>]
+    [<InlineData("""[assembly: AssemblyVersion("1.2.0.0")]  """, "1.2.0.0")>]
+    [<InlineData("""[assembly: AssemblyFileVersion("1.0.0.0")]""", "1.0.0.0")>]
+    [<InlineData("""[<assembly: AssemblyVersion("3.12.1.0")>]""", "3.12.1.0")>]
+    let TryParseVersionInformationReturnsCorrectData
+        (text : string)
+        (expectedS : string) =
+
+        let actual = TryParse text
+
+        let expected = Version(expectedS)
+        Assert.True actual.IsSome
+        Assert.Equal(expected, actual.Value.Version)

@@ -10,6 +10,9 @@ module Versioning =
         | Build = 1
         | Revision = 0
 
+    type ParsedVersion = {
+        Version : Version }
+
     let IncrementVersion rank (version : Version) =
         match rank with
         | Rank.Major ->
@@ -20,6 +23,14 @@ module Versioning =
             Version(version.Major, version.Minor, version.Build + 1, 0)
         | _ ->
             Version(version.Major, version.Minor, version.Build, version.Revision + 1)
+
+    let TryParse text =
+        let regx = Regex("""(^\s*\[<?\s*assembly\s*:\s*Assembly(?:File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?]\s*$)""")
+        let m = regx.Match text
+        if m.Success then
+            { Version =  Version(m.Groups.[2].Value) } |> Some
+        else
+            None
 
     let IncrementAssemblyAttribute rank text =
         let regx = Regex("""(^\s*\[<?\s*assembly\s*:\s*Assembly(?:File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?]\s*$)""")
