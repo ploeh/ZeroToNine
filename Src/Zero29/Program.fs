@@ -6,12 +6,32 @@ open System.IO
 module Program =
 
     let IncrementVersionsInFile rank file =
+        let parse text =
+            match Versioning.TryParse text with
+            | None -> (text, None)
+            | Some(pv) ->
+                let newVersion = Versioning.IncrementVersion rank pv.Version
+                let newText = pv.ToString newVersion
+                let notification =
+                    sprintf "Incremented %O %s from %O to %O"
+                        file
+                        (pv.AttributeType.Name.Replace("Attribute", ""))
+                        pv.Version
+                        newVersion
+                (newText, Some(notification))
+
         let writeAllLines file lines =
             File.WriteAllLines(file, lines, Text.Encoding.UTF8)
 
+        let printn (s : string) = Console.WriteLine s
+
+        let writeTo file parsedLines =
+            parsedLines |> Array.map fst |> writeAllLines file
+            parsedLines |> Array.choose snd |> Array.iter printn
+
         File.ReadAllLines file
-        |> Array.map (Versioning.IncrementAssemblyAttribute rank)
-        |> writeAllLines file
+        |> Array.map parse
+        |> writeTo file
 
     let IncrementVersionsInAllAssemblyInfoFiles rank =
         Directory.GetFiles(
