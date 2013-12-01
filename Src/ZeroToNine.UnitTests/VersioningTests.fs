@@ -94,3 +94,24 @@ module VersioningTests =
         let expected = Version(expectedS)
         Assert.True actual.IsSome
         Assert.Equal(expected, actual.Value.Version)
+
+    [<Theory>]
+    [<InlineData("""[assembly:AssemblyVersion("1.0.0.0")]""", """[assembly:AssemblyVersion("2.0.0.0")]""", "2.0.0.0")>]
+    [<InlineData("""[assembly: AssemblyVersion("1.0.0.0")]""", """[assembly: AssemblyVersion("2.0.0.0")]""", "2.0.0.0")>]
+    [<InlineData("""[assembly:  AssemblyVersion("1.0.0.0")]""", """[assembly:  AssemblyVersion("1.1.0.0")]""", "1.1.0.0")>]
+    [<InlineData("""  [assembly:AssemblyVersion("2.0.0.0")]""", """  [assembly:AssemblyVersion("3.0.0.0")]""", "3.0.0.0")>]
+    [<InlineData("""[  assembly:AssemblyVersion("2.0.0.0")]""", """[  assembly:AssemblyVersion("2.0.1.0")]""", "2.0.1.0")>]
+    [<InlineData("""[assembly  :AssemblyVersion("2.2.0.0")]""", """[assembly  :AssemblyVersion("4.6.8.0")]""", "4.6.8.0")>]
+    [<InlineData("""[assembly: AssemblyVersion  ("2.2.0.0")]""", """[assembly: AssemblyVersion  ("3.0.0.0")]""", "3.0.0.0")>]
+    [<InlineData("""[assembly: AssemblyVersion(  "1.2.0.0")]""", """[assembly: AssemblyVersion(  "1.2.1.0")]""", "1.2.1.0")>]
+    [<InlineData("""[assembly: AssemblyVersion("1.2.0.0"  )]""", """[assembly: AssemblyVersion("1.2.0.1"  )]""", "1.2.0.1")>]
+    [<InlineData("""[assembly: AssemblyVersion("1.2.0.0")  ]""", """[assembly: AssemblyVersion("2.0.0.0")  ]""", "2.0.0.0")>]
+    [<InlineData("""[assembly: AssemblyVersion("1.2.0.0")]  """, """[assembly: AssemblyVersion("2.0.0.0")]  """, "2.0.0.0")>]
+    [<InlineData("""[assembly: AssemblyFileVersion("1.0.0.0")]""", """[assembly: AssemblyFileVersion("2.0.0.0")]""", "2.0.0.0")>]
+    [<InlineData("""[<assembly: AssemblyVersion("3.12.1.0")>]""", """[<assembly: AssemblyVersion("3.13.0.0")>]""", "3.13.0.0")>]
+    let TryParseReturnsCorrectToStringFunction
+        (text : string)
+        (expected : string)
+        (newVersion : string) =
+        let actual = (TryParse text).Value.ToString (Version(newVersion))
+        Assert.Equal<string>(expected, actual)

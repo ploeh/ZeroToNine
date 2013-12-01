@@ -11,7 +11,8 @@ module Versioning =
         | Revision = 0
 
     type ParsedVersion = {
-        Version : Version }
+        Version : Version
+        ToString : Version -> string }
 
     let IncrementVersion rank (version : Version) =
         match rank with
@@ -28,7 +29,11 @@ module Versioning =
         let regx = Regex("""(^\s*\[<?\s*assembly\s*:\s*Assembly(?:File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?]\s*$)""")
         let m = regx.Match text
         if m.Success then
-            { Version =  Version(m.Groups.[2].Value) } |> Some
+            {
+                Version =  Version(m.Groups.[2].Value)
+                ToString = (fun v -> regx.Replace(text, sprintf """$1"%O"$3""" v))
+             }
+             |> Some
         else
             None
 
