@@ -115,3 +115,24 @@ module VersioningTests =
         (newVersion : string) =
         let actual = (TryParse text).Value.ToString (Version(newVersion))
         Assert.Equal<string>(expected, actual)
+
+    [<Theory>]
+    [<InlineData("""[assembly:AssemblyVersion("1.0.0.0")]""", typeof<System.Reflection.AssemblyVersionAttribute>)>]
+    [<InlineData("""[assembly: AssemblyVersion("1.0.0.1")]""", typeof<System.Reflection.AssemblyVersionAttribute>)>]
+    [<InlineData("""[assembly:  AssemblyVersion("1.0.0.0")]""", typeof<System.Reflection.AssemblyVersionAttribute>)>]
+    [<InlineData("""  [assembly:AssemblyVersion("2.0.0.0")]""", typeof<System.Reflection.AssemblyVersionAttribute>)>]
+    [<InlineData("""[  assembly:AssemblyVersion("2.0.0.0")]""", typeof<System.Reflection.AssemblyVersionAttribute>)>]
+    [<InlineData("""[assembly  :AssemblyVersion("2.2.0.0")]""", typeof<System.Reflection.AssemblyVersionAttribute>)>]
+    [<InlineData("""[assembly: AssemblyVersion  ("2.2.0.0")]""", typeof<System.Reflection.AssemblyVersionAttribute>)>]
+    [<InlineData("""[assembly: AssemblyVersion(  "1.2.0.0")]""", typeof<System.Reflection.AssemblyVersionAttribute>)>]
+    [<InlineData("""[assembly: AssemblyFileVersion("1.2.0.0"  )]""", typeof<System.Reflection.AssemblyFileVersionAttribute>)>]
+    [<InlineData("""[assembly: AssemblyFileVersion("1.2.0.0")  ]""", typeof<System.Reflection.AssemblyFileVersionAttribute>)>]
+    [<InlineData("""[assembly: AssemblyFileVersion("1.2.0.0")]  """, typeof<System.Reflection.AssemblyFileVersionAttribute>)>]
+    [<InlineData("""[assembly: AssemblyFileVersion("1.0.0.0")]""", typeof<System.Reflection.AssemblyFileVersionAttribute>)>]
+    [<InlineData("""[<assembly: AssemblyFileVersion("3.12.1.0")>]""", typeof<System.Reflection.AssemblyFileVersionAttribute>)>]
+    let TryParseReturnsCorrectAttributeType
+        (text : string)
+        (expected : Type) =
+
+        let actual = (TryParse text).Value.AttributeType
+        Assert.Equal(expected, actual)

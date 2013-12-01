@@ -12,6 +12,7 @@ module Versioning =
 
     type ParsedVersion = {
         Version : Version
+        AttributeType : Type
         ToString : Version -> string }
 
     let IncrementVersion rank (version : Version) =
@@ -26,12 +27,17 @@ module Versioning =
             Version(version.Major, version.Minor, version.Build, version.Revision + 1)
 
     let TryParse text =
-        let regx = Regex("""(^\s*\[<?\s*assembly\s*:\s*Assembly(?:File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?]\s*$)""")
+        let regx = Regex("""(^\s*\[<?\s*assembly\s*:\s*Assembly(File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?]\s*$)""")
         let m = regx.Match text
         if m.Success then
+            let attributeType =
+                match m.Groups.[2].Value.ToUpperInvariant() with
+                | "FILE" -> typeof<System.Reflection.AssemblyFileVersionAttribute>
+                | _ -> typeof<System.Reflection.AssemblyVersionAttribute>
             {
-                Version =  Version(m.Groups.[2].Value)
-                ToString = (fun v -> regx.Replace(text, sprintf """$1"%O"$3""" v))
+                Version =  Version(m.Groups.[3].Value)
+                AttributeType = attributeType
+                ToString = (fun v -> regx.Replace(text, sprintf """$1"%O"$4""" v))
              }
              |> Some
         else
