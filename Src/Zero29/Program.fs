@@ -14,7 +14,7 @@ module Program =
                 let newText = pv.ToString newVersion
                 let notification =
                     sprintf "Incremented %O %s from %O to %O"
-                        file
+                        (file |> FileSystem.GetRelativePath Environment.CurrentDirectory)
                         (pv.AttributeType.Name.Replace("Attribute", ""))
                         pv.Version
                         newVersion
