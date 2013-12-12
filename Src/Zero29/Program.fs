@@ -4,6 +4,8 @@ open System
 open System.IO
 
 module Program =
+    
+    let private printn (s : string) = Console.WriteLine s
 
     let IncrementVersionsInFile rank file =
         let parse text =
@@ -22,8 +24,6 @@ module Program =
 
         let writeAllLines file lines =
             File.WriteAllLines(file, lines, Text.Encoding.UTF8)
-
-        let printn (s : string) = Console.WriteLine s
 
         let writeTo file parsedLines =
             parsedLines |> Array.map fst |> writeAllLines file
@@ -44,31 +44,21 @@ module Program =
                         pv.Version
                 |> Some
 
-        let printn (s : string) = Console.WriteLine s
-
         File.ReadAllLines file
-        |> Array.map parse
-        |> Array.choose id 
+        |> Array.choose parse
         |> Array.iter printn
-
-    let IncrementVersionsInAllAssemblyInfoFiles rank =
+    
+    let DoInAllAssemblyInfoFiles action =
         Directory.GetFiles(
             Environment.CurrentDirectory,
             "AssemblyInfo.*",
             SearchOption.AllDirectories)
-        |> Array.iter (IncrementVersionsInFile rank)
-
-    let ListVersionsInAllAssemblyInfoFiles =
-        Directory.GetFiles(
-            Environment.CurrentDirectory,
-            "AssemblyInfo.*",
-            SearchOption.AllDirectories)
-        |> Array.iter ListVersionsInFile
+        |> Array.iter action
 
     [<EntryPoint>]
     let main argv = 
         match argv |> Args.Parse |> Seq.toList with
-        | [Increment(rank)] -> IncrementVersionsInAllAssemblyInfoFiles rank
-        | [ListVersions] -> ListVersionsInAllAssemblyInfoFiles
+        | [Increment(rank)] -> IncrementVersionsInFile rank |> DoInAllAssemblyInfoFiles
+        | [ListVersions] -> ListVersionsInFile |> DoInAllAssemblyInfoFiles
         | _ -> ()
         0 // return an integer exit code
