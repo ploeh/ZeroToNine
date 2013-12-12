@@ -28,15 +28,22 @@ Zero29 <command> [<args>]
 
 ### Commands
 
+The following commands are available:
+
+- Increment
+- List
+
+#### Increment 
+
 ```
 -i <major|minor|build|patch|revision>
 ```
 
-Increments the specified component of each Assembly Version and Assembly File Version Attributes within all `AssemblyInfo.*` files beneath the current working directory.
+Increments the specified component of each Assembly Version and Assembly File Version Attribute within all `AssemblyInfo.*` files beneath the current working directory.
 
 `build` and `patch` are synonyms. The [Version](http://msdn.microsoft.com/en-us/library/system.version.aspx) type refers to the third component as the *build*, whereas [Semantic Versioning](http://semver.org) terms it *patch*.
 
-#### Examples
+##### Examples
 
 ```
 Zero29 -i minor
@@ -49,3 +56,28 @@ Zero29 -i patch
 ```
 
 Increments the patch version in all `AssemblyInfo.*` files; e.g. from *1.0.1.0* to *1.0.2.0*.
+
+#### List
+
+```
+-l
+```
+
+Lists the versions of each Assembly Version and Assembly File Version Attribute within all `AssemblyInfo.*` files beneath the current working directory.
+
+##### Examples
+
+```
+Zero29 -l
+```
+
+Lists the version information found in the appropriate source files beneath the current working directory.
+
+###### Sample output
+
+```
+./Foo/AssemblyInfo.fs AssemblyVersion 1.1.0.0
+./Foo/AssemblyInfo.fs AssemblyFileVersion 1.1.0.0
+./Bar/AssemblyInfo.cs AssemblyVersion 2.0.3.0
+./Bar/AssemblyInfo.cs AssemblyFileVersion 2.0.3.0
+```
