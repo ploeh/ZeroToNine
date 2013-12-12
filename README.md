@@ -1,6 +1,6 @@
 # ZeroToNine
 
-A tool for performing coordinated updates to .NET Assembly Version attributes across multiple source files.
+A tool for maintaining .NET Assembly versions across multiple source files.
 
 ## Organization
 
