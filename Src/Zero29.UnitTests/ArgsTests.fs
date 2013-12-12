@@ -15,3 +15,8 @@ module ArgsTests =
     let ParseIncementReturnsCorrectResult(rank : string, expectedRank : Rank) =
         let actual = [| "-i"; rank |] |> Args.Parse
         Assert.Equal<Arg>([Increment(expectedRank)], actual |> Seq.toList)
+
+    [<Fact>]
+    let ParseListVersion() =
+        let actual = [| "-l" |] |> Args.Parse
+        Assert.Equal<Arg>([ListVersions], actual |> Seq.toList)
