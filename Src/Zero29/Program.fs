@@ -34,15 +34,15 @@ module Program =
         |> writeTo file
 
     let ListVersionsInFile file =
+        let formatVersion (pv : Versioning.ParsedVersion) =
+            sprintf "%O %s %O"
+                (file |> FileSystem.GetRelativePath Environment.CurrentDirectory)
+                (pv.AttributeType.Name.Replace("Attribute", ""))
+                pv.Version
+
         let parse text =
-            match Versioning.TryParse text with
-            | None -> None
-            | Some(pv) ->
-                sprintf "%O %s %O"
-                        (file |> FileSystem.GetRelativePath Environment.CurrentDirectory)
-                        (pv.AttributeType.Name.Replace("Attribute", ""))
-                        pv.Version
-                |> Some
+            Versioning.TryParse text
+            |> Option.map formatVersion                            
 
         File.ReadAllLines file
         |> Array.choose parse
