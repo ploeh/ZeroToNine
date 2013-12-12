@@ -1,6 +1,6 @@
 # ZeroToNine
 
-A tool for maintaining .NET Assembly versions across multiple files.
+A tool for performing coordinated updates to .NET Assembly Version attributes across multiple source files.
 
 ## Organization
 
@@ -9,7 +9,7 @@ A tool for maintaining .NET Assembly versions across multiple files.
 - *Zero29* is a command-line utility.
 - *ZeroToNine* is a library containing most of the implementation of *Zero29*.
 
-While *Zero29* is the raison d'être for the *ZeroToNine* project, this organization enables other users to reuse the implemnentation logic without having to reference an executable assembly.
+While *Zero29* is the raison d'être for the *ZeroToNine* project, this organization enables other users to reuse the implementation logic without having to reference an executable assembly.
 
 ### NuGet packages
 
@@ -32,9 +32,9 @@ Zero29 <command> [<args>]
 -i <major|minor|build|patch|revision>
 ```
 
-Increments all the Assembly Version and Assembly File Version in all `AssemblyInfo.*` files beneath the current working directory.
+Increments the specified component of each Assembly Version and Assembly File Version Attributes within all `AssemblyInfo.*` files beneath the current working directory.
 
-`build` and `patch` are synonyms. The [Version](http://msdn.microsoft.com/en-us/library/system.version.aspx) class calls the third level *build*, whereas [Semantic Versioning](http://semver.org) calls it *patch*.
+`build` and `patch` are synonyms. The [Version](http://msdn.microsoft.com/en-us/library/system.version.aspx) type refers to the third component as the *build*, whereas [Semantic Versioning](http://semver.org) terms it *patch*.
 
 #### Examples
 
