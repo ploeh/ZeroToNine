@@ -17,6 +17,8 @@ module Args =
         | [_; "minor"] -> Increment(Rank.Minor)
         | [_; "build"] -> Increment(Rank.Build)
         | [_; "patch"] -> Increment(Rank.Build)
-        | _ -> Increment(Rank.Revision)
+        | [_; _] -> Increment(Rank.Revision)
+        | [_] -> Increment(Rank.Revision)
+        | _ -> ShowHelp
         |> Seq.singleton
 

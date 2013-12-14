@@ -17,6 +17,11 @@ module ArgsTests =
         Assert.Equal<Arg>([Increment(expectedRank)], actual |> Seq.toList)
 
     [<Fact>]
+    let ParseIncrementWithoutRankReturnsCorrectResult() =
+        let actual = [| "-i" |] |> Args.Parse
+        Assert.Equal<Arg>([Increment(Rank.Revision)], actual |> Seq.toList)
+
+    [<Fact>]
     let ParseListVersion() =
         let actual = [| "-l" |] |> Args.Parse
         Assert.Equal<Arg>([ListVersions], actual |> Seq.toList)
@@ -26,4 +31,9 @@ module ArgsTests =
     [<InlineData("-h")>]
     let ParseHelpArgsReturnsShowHelp(switch : string) =
         let actual = [| switch |] |> Args.Parse
+        Assert.Equal<Arg>([ShowHelp], actual |> Seq.toList)
+
+    [<Fact>]
+    let ParseEmptyArgsReturnsShowHelp() =
+        let actual = [| |] |> Args.Parse
         Assert.Equal<Arg>([ShowHelp], actual |> Seq.toList)
