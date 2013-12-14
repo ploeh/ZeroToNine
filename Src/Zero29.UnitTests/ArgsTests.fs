@@ -37,3 +37,18 @@ module ArgsTests =
     let ParseEmptyArgsReturnsShowHelp() =
         let actual = [| |] |> Args.Parse
         Assert.Equal<Arg>([ShowHelp], actual |> Seq.toList)
+
+    [<Theory>]
+    [<InlineData("-a")>]
+    [<InlineData("-a ")>]
+    [<InlineData("-a b")>]
+    [<InlineData("-h b")>]
+    [<InlineData("-s major")>]
+    [<InlineData("-s minor")>]
+    [<InlineData("-s build")>]
+    [<InlineData("-s patch")>]
+    [<InlineData("-s revision")>]
+    let ParseUnknownArgsReturnsCorrectResult(argString : string) =
+        let args = argString.Split() |> Array.toList
+        let actual = args |> Args.Parse
+        Assert.Equal<Arg>([Unknown(args)], actual |> Seq.toList)

@@ -4,21 +4,23 @@ open Ploeh.ZeroToNine.Versioning
 
 type Arg =
     | Increment of Rank
-    | ListVersions 
+    | ListVersions
     | ShowHelp
+    | Unknown of string list
 
 module Args =
     let Parse argv =
         match argv |> Seq.toList with
+        | ["-l"] -> ListVersions
+        | ["-i"; "major"] -> Increment(Rank.Major)
+        | ["-i"; "minor"] -> Increment(Rank.Minor)
+        | ["-i"; "build"] -> Increment(Rank.Build)
+        | ["-i"; "patch"] -> Increment(Rank.Build)
+        | ["-i"; "revision"] -> Increment(Rank.Revision)
+        | ["-i"] -> Increment(Rank.Revision)
         | ["-?"] -> ShowHelp
         | ["-h"] -> ShowHelp
-        | ["-l"] -> ListVersions
-        | [_; "major"] -> Increment(Rank.Major)
-        | [_; "minor"] -> Increment(Rank.Minor)
-        | [_; "build"] -> Increment(Rank.Build)
-        | [_; "patch"] -> Increment(Rank.Build)
-        | [_; _] -> Increment(Rank.Revision)
-        | [_] -> Increment(Rank.Revision)
-        | _ -> ShowHelp
+        | [] -> ShowHelp
+        | x -> Unknown(x)
         |> Seq.singleton
 
