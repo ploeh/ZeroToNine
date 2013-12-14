@@ -32,6 +32,7 @@ The following commands are available:
 
 - Increment
 - List
+- Help
 
 #### Increment 
 
@@ -80,4 +81,36 @@ Lists the version information found in the appropriate source files beneath the 
 ./Foo/AssemblyInfo.fs AssemblyFileVersion 1.1.0.0
 ./Bar/AssemblyInfo.cs AssemblyVersion 2.0.3.0
 ./Bar/AssemblyInfo.cs AssemblyFileVersion 2.0.3.0
+```
+
+#### Help
+
+```
+-h | -?
+```
+
+Displays the help for available commands.
+
+##### Examples
+
+```
+Zero29 -h
+```
+
+###### Sample output
+
+```
+Zero29
+A tool for maintaining .NET Assembly versions across multiple source files.
+Operates on all AssemblyInfo.* files beneath the current working directory.
+
+Zero29 <command> [<args>]
+
+-i <major|minor|build|patch|revision>
+   - Increments the specified component of each
+     Assembly Version and Assembly File Version attribute.
+-l
+   - Lists the versions.
+-? | -h
+   - Displays this help.
 ```
