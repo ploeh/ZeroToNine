@@ -55,10 +55,29 @@ module Program =
             SearchOption.AllDirectories)
         |> Array.iter action
 
+    let ShowUsage() =
+        [|
+            "Zero29"
+            "A tool for maintaining .NET Assembly versions across multiple source files."
+            "Operates on all AssemblyInfo.* files beneath the current working directory."
+            ""
+            "Zero29 <command> [<args>]"
+            ""
+            "-i <major|minor|build|patch|revision>"
+            "   - Increments the specified component of each"
+            "     Assembly Version and Assembly File Version attribute."
+            "-l"
+            "   - Lists the versions."
+            "-? | -h"
+            "   - Displays this help."
+        |]
+        |> Array.iter printn
+
     [<EntryPoint>]
     let main argv = 
         match argv |> Args.Parse |> Seq.toList with
         | [Increment(rank)] -> IncrementVersionsInFile rank |> DoInAllAssemblyInfoFiles
         | [ListVersions] -> ListVersionsInFile |> DoInAllAssemblyInfoFiles
+        | [ShowHelp] -> ShowUsage()
         | _ -> ()
         0 // return an integer exit code

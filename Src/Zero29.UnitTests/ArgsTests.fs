@@ -20,3 +20,10 @@ module ArgsTests =
     let ParseListVersion() =
         let actual = [| "-l" |] |> Args.Parse
         Assert.Equal<Arg>([ListVersions], actual |> Seq.toList)
+
+    [<Theory>]
+    [<InlineData("-?")>]
+    [<InlineData("-h")>]
+    let ParseHelpArgsReturnsShowHelp(switch : string) =
+        let actual = [| switch |] |> Args.Parse
+        Assert.Equal<Arg>([ShowHelp], actual |> Seq.toList)
