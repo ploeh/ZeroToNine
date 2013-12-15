@@ -17,11 +17,6 @@ module ArgsTests =
         Assert.Equal<Arg>([Increment(expectedRank)], actual |> Seq.toList)
 
     [<Fact>]
-    let ParseIncrementWithoutRankReturnsCorrectResult() =
-        let actual = [| "-i" |] |> Args.Parse
-        Assert.Equal<Arg>([Increment(Rank.Revision)], actual |> Seq.toList)
-
-    [<Fact>]
     let ParseListVersion() =
         let actual = [| "-l" |] |> Args.Parse
         Assert.Equal<Arg>([ListVersions], actual |> Seq.toList)
@@ -48,6 +43,7 @@ module ArgsTests =
     [<InlineData("-s build")>]
     [<InlineData("-s patch")>]
     [<InlineData("-s revision")>]
+    [<InlineData("-i")>]
     let ParseUnknownArgsReturnsCorrectResult(argString : string) =
         let args = argString.Split() |> Array.toList
         let actual = args |> Args.Parse

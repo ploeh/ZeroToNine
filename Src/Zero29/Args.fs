@@ -17,7 +17,6 @@ module Args =
         | ["-i"; "build"] -> Increment(Rank.Build)
         | ["-i"; "patch"] -> Increment(Rank.Build)
         | ["-i"; "revision"] -> Increment(Rank.Revision)
-        | ["-i"] -> Increment(Rank.Revision)
         | ["-?"] -> ShowHelp
         | ["-h"] -> ShowHelp
         | [] -> ShowHelp
