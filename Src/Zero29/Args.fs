@@ -4,16 +4,34 @@ open Ploeh.ZeroToNine.Versioning
 
 type Arg =
     | Increment of Rank
-    | ListVersions 
+    | ListVersions
+    | ShowHelp
+    | Unknown of string list
 
 module Args =
     let Parse argv =
         match argv |> Seq.toList with
         | ["-l"] -> ListVersions
-        | [_; "major"] -> Increment(Rank.Major)
-        | [_; "minor"] -> Increment(Rank.Minor)
-        | [_; "build"] -> Increment(Rank.Build)
-        | [_; "patch"] -> Increment(Rank.Build)
-        | _ -> Increment(Rank.Revision)
+        | ["-i"; "major"] -> Increment(Rank.Major)
+        | ["-i"; "minor"] -> Increment(Rank.Minor)
+        | ["-i"; "build"] -> Increment(Rank.Build)
+        | ["-i"; "patch"] -> Increment(Rank.Build)
+        | ["-i"; "revision"] -> Increment(Rank.Revision)
+        | ["-?"] -> ShowHelp
+        | ["-h"] -> ShowHelp
+        | [] -> ShowHelp
+        | x -> Unknown(x)
         |> Seq.singleton
 
+    let Usage =
+        [
+            "Zero29 <command> [<args>]"
+            ""
+            "-i <major|minor|build|patch|revision>"
+            "   - Increments the specified component of each"
+            "     Assembly Version and Assembly File Version attribute."
+            "-l"
+            "   - Lists the versions."
+            "-? | -h"
+            "   - Displays this help."
+        ]

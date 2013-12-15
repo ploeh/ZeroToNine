@@ -42,12 +42,12 @@ module Program =
 
         let parse text =
             Versioning.TryParse text
-            |> Option.map formatVersion                            
+            |> Option.map formatVersion
 
         File.ReadAllLines file
         |> Array.choose parse
         |> Array.iter printn
-    
+
     let DoInAllAssemblyInfoFiles action =
         Directory.GetFiles(
             Environment.CurrentDirectory,
@@ -55,10 +55,49 @@ module Program =
             SearchOption.AllDirectories)
         |> Array.iter action
 
+    let private Description =
+        [
+            "Zero29"
+            "A tool for maintaining .NET Assembly versions across multiple source files."
+            "Operates on all AssemblyInfo.* files beneath the current working directory."
+        ]
+
+    let private EmptyLine = [ "" ]
+
+    let private display messages =
+        messages
+        |> Seq.collect id
+        |> Seq.iter printn
+
+    let ShowUsage() =
+        [
+            Description
+            EmptyLine
+            Args.Usage
+        ]
+        |> display
+
+    let PrintUnrecognizedArgs args =
+        let unrecognizedMessage =
+            [
+                "Sorry but I could not recognize any command"
+                sprintf "  in %A" args
+            ]
+        [
+            Description
+            EmptyLine
+            unrecognizedMessage
+            EmptyLine
+            Args.Usage
+        ]
+        |> display
+
     [<EntryPoint>]
     let main argv = 
         match argv |> Args.Parse |> Seq.toList with
         | [Increment(rank)] -> IncrementVersionsInFile rank |> DoInAllAssemblyInfoFiles
         | [ListVersions] -> ListVersionsInFile |> DoInAllAssemblyInfoFiles
+        | [ShowHelp] -> ShowUsage()
+        | [Unknown(args)] -> PrintUnrecognizedArgs args
         | _ -> ()
         0 // return an integer exit code

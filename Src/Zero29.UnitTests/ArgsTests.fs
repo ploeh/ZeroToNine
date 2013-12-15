@@ -20,3 +20,31 @@ module ArgsTests =
     let ParseListVersion() =
         let actual = [| "-l" |] |> Args.Parse
         Assert.Equal<Arg>([ListVersions], actual |> Seq.toList)
+
+    [<Theory>]
+    [<InlineData("-?")>]
+    [<InlineData("-h")>]
+    let ParseHelpArgsReturnsShowHelp(switch : string) =
+        let actual = [| switch |] |> Args.Parse
+        Assert.Equal<Arg>([ShowHelp], actual |> Seq.toList)
+
+    [<Fact>]
+    let ParseEmptyArgsReturnsShowHelp() =
+        let actual = [| |] |> Args.Parse
+        Assert.Equal<Arg>([ShowHelp], actual |> Seq.toList)
+
+    [<Theory>]
+    [<InlineData("-a")>]
+    [<InlineData("-a ")>]
+    [<InlineData("-a b")>]
+    [<InlineData("-h b")>]
+    [<InlineData("-s major")>]
+    [<InlineData("-s minor")>]
+    [<InlineData("-s build")>]
+    [<InlineData("-s patch")>]
+    [<InlineData("-s revision")>]
+    [<InlineData("-i")>]
+    let ParseUnknownArgsReturnsCorrectResult(argString : string) =
+        let args = argString.Split() |> Array.toList
+        let actual = args |> Args.Parse
+        Assert.Equal<Arg>([Unknown(args)], actual |> Seq.toList)

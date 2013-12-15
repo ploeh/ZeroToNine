@@ -32,6 +32,7 @@ The following commands are available:
 
 - Increment
 - List
+- Help
 
 #### Increment 
 
@@ -80,4 +81,18 @@ Lists the version information found in the appropriate source files beneath the 
 ./Foo/AssemblyInfo.fs AssemblyFileVersion 1.1.0.0
 ./Bar/AssemblyInfo.cs AssemblyVersion 2.0.3.0
 ./Bar/AssemblyInfo.cs AssemblyFileVersion 2.0.3.0
+```
+
+#### Help
+
+```
+-h | -?
+```
+
+Displays the help about available commands.
+
+##### Examples
+
+```
+Zero29 -h
 ```
