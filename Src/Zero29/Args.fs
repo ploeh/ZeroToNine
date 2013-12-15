@@ -23,3 +23,15 @@ module Args =
         | x -> Unknown(x)
         |> Seq.singleton
 
+    let Usage =
+        [
+            "Zero29 <command> [<args>]"
+            ""
+            "-i <major|minor|build|patch|revision>"
+            "   - Increments the specified component of each"
+            "     Assembly Version and Assembly File Version attribute."
+            "-l"
+            "   - Lists the versions."
+            "-? | -h"
+            "   - Displays this help."
+        ]

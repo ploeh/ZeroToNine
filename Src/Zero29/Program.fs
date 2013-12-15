@@ -62,19 +62,6 @@ module Program =
             "Operates on all AssemblyInfo.* files beneath the current working directory."
         ]
 
-    let private Usage =
-        [
-            "Zero29 <command> [<args>]"
-            ""
-            "-i <major|minor|build|patch|revision>"
-            "   - Increments the specified component of each"
-            "     Assembly Version and Assembly File Version attribute."
-            "-l"
-            "   - Lists the versions."
-            "-? | -h"
-            "   - Displays this help."
-        ]
-
     let private EmptyLine = [ "" ]
 
     let private display messages =
@@ -86,7 +73,7 @@ module Program =
         [
             Description
             EmptyLine
-            Usage
+            Args.Usage
         ]
         |> display
 
@@ -101,7 +88,7 @@ module Program =
             EmptyLine
             unrecognizedMessage
             EmptyLine
-            Usage
+            Args.Usage
         ]
         |> display
 
