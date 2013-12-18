@@ -56,6 +56,11 @@ module VersioningTests =
     [<InlineData(Rank.Major, """[assembly: AssemblyVersion("1.2.0.0")]  """, """[assembly: AssemblyVersion("2.0.0.0")]  """)>]
     [<InlineData(Rank.Major, """[assembly: AssemblyFileVersion("1.0.0.0")]""", """[assembly: AssemblyFileVersion("2.0.0.0")]""")>]
     [<InlineData(Rank.Minor, """[<assembly: AssemblyVersion("3.12.1.0")>]""", """[<assembly: AssemblyVersion("3.13.0.0")>]""")>]
+    [<InlineData(Rank.Minor, """<Assembly  :AssemblyVersion("2.2.0.0")>""", """<Assembly  :AssemblyVersion("2.3.0.0")>""")>]
+    [<InlineData(Rank.Build, """<Assembly: AssemblyVersion(  "1.2.0.0")>""", """<Assembly: AssemblyVersion(  "1.2.1.0")>""")>]
+    [<InlineData(Rank.Major, """<Assembly: AssemblyVersion  ("2.2.0.0")>""", """<Assembly: AssemblyVersion  ("3.0.0.0")>""")>]
+    [<InlineData(Rank.Revision, """<Assembly: AssemblyVersion("1.2.0.0"  )>""", """<Assembly: AssemblyVersion("1.2.0.1"  )>""")>]
+    [<InlineData(Rank.Major, """<Assembly: AssemblyFileVersion("1.0.0.0")>""", """<Assembly: AssemblyFileVersion("2.0.0.0")>""")>]
     let IncrementInTextReturnsCorrectResult
         (rank: Rank)
         (text : string)
@@ -85,6 +90,7 @@ module VersioningTests =
     [<InlineData("""[assembly: AssemblyVersion("1.2.0.0")]  """, "1.2.0.0")>]
     [<InlineData("""[assembly: AssemblyFileVersion("1.0.0.0")]""", "1.0.0.0")>]
     [<InlineData("""[<assembly: AssemblyVersion("3.12.1.0")>]""", "3.12.1.0")>]
+    [<InlineData("""<Assembly: AssemblyVersion("3.12.1.0")>""", "3.12.1.0")>]
     let TryParseVersionInformationReturnsCorrectData
         (text : string)
         (expectedS : string) =
@@ -109,6 +115,7 @@ module VersioningTests =
     [<InlineData("""[assembly: AssemblyVersion("1.2.0.0")]  """, """[assembly: AssemblyVersion("2.0.0.0")]  """, "2.0.0.0")>]
     [<InlineData("""[assembly: AssemblyFileVersion("1.0.0.0")]""", """[assembly: AssemblyFileVersion("2.0.0.0")]""", "2.0.0.0")>]
     [<InlineData("""[<assembly: AssemblyVersion("3.12.1.0")>]""", """[<assembly: AssemblyVersion("3.13.0.0")>]""", "3.13.0.0")>]
+    [<InlineData("""<Assembly: AssemblyVersion("3.12.1.0")>""", """<Assembly: AssemblyVersion("3.13.0.0")>""", "3.13.0.0")>]
     let TryParseReturnsCorrectToStringFunction
         (text : string)
         (expected : string)
@@ -130,6 +137,7 @@ module VersioningTests =
     [<InlineData("""[assembly: AssemblyFileVersion("1.2.0.0")]  """, typeof<System.Reflection.AssemblyFileVersionAttribute>)>]
     [<InlineData("""[assembly: AssemblyFileVersion("1.0.0.0")]""", typeof<System.Reflection.AssemblyFileVersionAttribute>)>]
     [<InlineData("""[<assembly: AssemblyFileVersion("3.12.1.0")>]""", typeof<System.Reflection.AssemblyFileVersionAttribute>)>]
+    [<InlineData("""<Assembly: AssemblyFileVersion("3.132.1.0")>""", typeof<System.Reflection.AssemblyFileVersionAttribute>)>]
     let TryParseReturnsCorrectAttributeType
         (text : string)
         (expected : Type) =
