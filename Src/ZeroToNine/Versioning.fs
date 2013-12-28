@@ -26,7 +26,7 @@ module Versioning =
         | _ ->
             Version(version.Major, version.Minor, version.Build, version.Revision + 1)
 
-    let private regx = Regex("""(^\s*[\[<]<?\s*[aA]ssembly\s*:\s*Assembly(File)?Version\s*\(\s*)"(\d+\.\d+\.\d+\.\d+)"(\s*\)\s*>?[\]>]\s*$)""", RegexOptions.Compiled)
+    let private regx = Regex("""(^\s*[\[<]<?\s*[aA]ssembly\s*:\s*Assembly(File)?Version\s*\(\s*)"(\d+(\.\d+)?(\.\d+)?(\.\d+)?)"(\s*\)\s*>?[\]>]\s*$)""", RegexOptions.Compiled)
     
     let TryParse text =
         let m = regx.Match text
@@ -38,7 +38,7 @@ module Versioning =
             {
                 Version =  Version(m.Groups.[3].Value)
                 AttributeType = attributeType
-                ToString = (fun v -> regx.Replace(text, sprintf """$1"%O"$4""" v))
+                ToString = (fun v -> regx.Replace(text, sprintf """$1"%O"$7""" v))
              }
              |> Some
         else
