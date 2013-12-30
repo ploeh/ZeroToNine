@@ -43,8 +43,3 @@ module Versioning =
              |> Some
         else
             None
-
-    let IncrementAssemblyAttribute rank text =
-        match TryParse text with
-        | None -> text
-        | Some(pv) -> pv.Version |> IncrementVersion rank |> pv.ToString
