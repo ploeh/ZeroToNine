@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="CompleteBuild" ToolsVersion="4.0">
-  <PropertyGroup>
-    <XUnitPath>Src\packages\xunit.runners.1.9.2\tools</XUnitPath>
-  </PropertyGroup>
+  <!--Project configuration-->
+  <Import Project="Build.config" />
+  
   <UsingTask TaskName="xunit" AssemblyFile="$(XUnitPath)\xunit.runner.msbuild.dll" />
 
   <!--What to build-->
   <ItemGroup>
-    <ProjectToBuild Include="Src\*.sln" />
-  </ItemGroup>
-  <ItemGroup>
-    <BuildOutput Include="Src\Zero29\bin\Release\Zero29.exe" />
-    <BuildOutput Include="Src\Zero29\bin\Release\Zero29.XML" />
-    <BuildOutput Include="Src\ZeroToNine\bin\Release\Ploeh.ZeroToNine.dll" />
-    <BuildOutput Include="Src\ZeroToNine\bin\Release\Ploeh.ZeroToNine.XML" />
+    <ProjectToBuild Include="*.sln" />
   </ItemGroup>
 
   <!--Clean-->
@@ -32,10 +26,6 @@
 
   <!--Test-->
   <Target Name="Test" DependsOnTargets="Build">
-    <ItemGroup>
-      <TestAssemblies Include="**\bin\Release\*Tests.dll" />
-    </ItemGroup>
-
     <xunit Assemblies="@(TestAssemblies)" />
   </Target>
 
@@ -83,11 +73,11 @@
              Query="//metadata/version"
              Value="$(SemanticVersion)" />
     <XmlPoke XmlInputPath="$(TempNuspecFilePath)"
-             Query="//metadata/dependencies/dependency[contains(@id, 'zerotonine')]/@version"
+             Query="//metadata/dependencies/dependency[contains(@id, '$(NuGetPackageDependencyRoot)')]/@version"
              Value="$(SemanticVersion)" />
   </Target>
   <Target Name="NuGetPack" DependsOnTargets="NuGetPrepare">
-    <Exec Command="Src\packages\NuGet.CommandLine.2.7.1\tools\nuget.exe pack %(TempNuspecFiles.FullPath) -BasePath $(ReleaseFolder) -OutputDirectory $(NuGetOutputFolder) -NoPackageAnalysis" />
+    <Exec Command="$(NuGetPath)\nuget.exe pack %(TempNuspecFiles.FullPath) -BasePath $(ReleaseFolder) -OutputDirectory $(NuGetOutputFolder)" />
   </Target>
   <Target Name="CleanTemporaryNuGetSpecFiles" DependsOnTargets="NuGetPack">
     <Delete Files="@(TempNuspecFiles)" />
