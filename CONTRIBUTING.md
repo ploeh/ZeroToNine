@@ -10,6 +10,21 @@ All binaries (such as xUnit.net) are included as NuGet packages in the source co
 
 There is currently a single solution to be found under the \Src folder, but be aware that the final verification step before pushing to the repository is to successfully build the BuildRelease.msbuild file. This can be done either from Bash (using build-release.sh) or PowerShell (using BuildRelease.ps1).
 
+Please be aware that, currently, this build process emits a single warning:
+
+```
+EXEC : warning : 1 issue(s) found with package 'Zero29'. [.\ZeroToNine\BuildRelease.msbuild]
+
+  Issue: Assembly outside lib folder.
+  Description: The assembly 'tools\Ploeh.ZeroToNine.dll' is not inside the 'lib' folder and
+  hence it won't be added as reference when the package is installed into a project.
+  Solution: Move it into the 'lib' folder if it should be referenced.
+```
+
+This warning is expected. However, due to the way NuGet packaging works, it's impossible to discard a single warning: either you disable all warnings, or you don't disable warnings. While [this issue has been logged](https://nuget.codeplex.com/discussions/273522), currently, it's safer to live with this single, expected warning, than risk suppressing other warnings.
+
+If you want to issue a Pull Request, please first make sure that the verification succeeds as described here. 
+
 ## Pull requests
 
 When developing for ZeroToNine, please respect the coding style already present. Look around in the source code to get a feel for it.
