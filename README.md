@@ -83,6 +83,23 @@ Lists the version information found in the appropriate source files beneath the 
 ./Bar/AssemblyInfo.cs AssemblyFileVersion 2.0.3.0
 ```
 
+###### Listing unique versions
+
+In bash, you can pipe the output of the *list* operation to other bash commands in order to get a list of unique versions:
+
+```
+Zero29.exe -l | awk '{ print $3; }' | sort | uniq
+```
+
+###### Sample output
+
+Given the raw output from the previous example, the output of this command would be:
+
+```
+1.1.0.0
+2.0.3.0
+```
+
 #### Help
 
 ```
