@@ -10,7 +10,7 @@
     <iconUrl>https://raw.github.com/ploeh/ZeroToNine/master/Logos/029_256.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Zero29 is a command-line tool that help to manage explicit versioning for C# and F# projects, by automating editing of version information in AssemblyInfo files.</description>
-    <copyright>Copyright Mark Seemann 2013</copyright>
+    <copyright>Copyright Mark Seemann 2014</copyright>
     <tags>ContinuousIntegration Versioning Build</tags>
   </metadata>
   <files>
