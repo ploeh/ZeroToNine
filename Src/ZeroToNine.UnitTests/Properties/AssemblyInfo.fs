@@ -13,7 +13,7 @@ open System.Runtime.InteropServices
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("Ploeh")>]
 [<assembly: AssemblyProduct("ZeroToNine")>]
-[<assembly: AssemblyCopyright("Copyright © Ploeh 2013")>]
+[<assembly: AssemblyCopyright("Copyright © Ploeh 2014")>]
 [<assembly: AssemblyTrademark("")>]
 [<assembly: AssemblyCulture("")>]
 
