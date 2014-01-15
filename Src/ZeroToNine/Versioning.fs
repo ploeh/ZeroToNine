@@ -39,7 +39,7 @@ module Versioning =
                 Version =  Version(m.Groups.[3].Value)
                 AttributeType = attributeType
                 ToString = (fun v -> regx.Replace(text, sprintf """$1"%O"$7""" v))
-             }
-             |> Some
+            }
+            |> Some
         else
             None
