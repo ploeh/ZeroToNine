@@ -43,6 +43,8 @@ module ArgsTests =
 
     [<Theory>]
     [<InlineData("-a")>]
+    [<InlineData("-c ")>]
+    [<InlineData("-c b")>]
     [<InlineData("-h b")>]
     [<InlineData("-s major")>]
     [<InlineData("-s minor")>]
