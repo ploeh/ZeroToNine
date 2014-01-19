@@ -45,7 +45,7 @@ module VersioningTests =
     [<InlineData("1.1.0.0")>]
     [<InlineData("1.0.1.0")>]
     let AssignVersionReturnsCorrectResult(version : string) = 
-        let actual = AssignVersion version
+        let actual = CreateVersion version
         let expected = Version.Parse(version)
         Assert.Equal(expected, actual)
     

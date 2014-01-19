@@ -38,7 +38,7 @@ module Program =
             match Versioning.TryParse text with
             | None -> (text, None)
             | Some(pv) ->
-                let newVersion = Versioning.AssignVersion version
+                let newVersion = Versioning.CreateVersion version
                 let newText = pv.ToString newVersion
                 let notification =
                     sprintf "Assigned %O %s from %O to %O"
