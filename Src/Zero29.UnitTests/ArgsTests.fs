@@ -7,6 +7,14 @@ open Xunit.Extensions
 
 module ArgsTests =
     [<Theory>]
+    [<InlineData("1.0.0.0")>]
+    [<InlineData("1.1.0.0")>]
+    [<InlineData("1.0.1.0")>]
+    let ParseAssignVersionReturnsCorrectResult(version : string) =
+        let actual = [| "-a"; version |] |> Args.Parse
+        Assert.Equal<Arg>([Assign(version)], actual |> Seq.toList)
+
+    [<Theory>]
     [<InlineData("major",    Rank.Major)>]
     [<InlineData("minor",    Rank.Minor)>]
     [<InlineData("build",    Rank.Build)>]
@@ -35,8 +43,6 @@ module ArgsTests =
 
     [<Theory>]
     [<InlineData("-a")>]
-    [<InlineData("-a ")>]
-    [<InlineData("-a b")>]
     [<InlineData("-h b")>]
     [<InlineData("-s major")>]
     [<InlineData("-s minor")>]
