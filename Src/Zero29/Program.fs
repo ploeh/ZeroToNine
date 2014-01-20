@@ -7,46 +7,32 @@ module Program =
     
     let private printn (s : string) = Console.WriteLine s
 
-    let IncrementVersionsInFile rank file =
+    let IncrementVersion rank pv =
+        let newVersion = Versioning.IncrementVersion rank pv
+        let notificationf = sprintf "Incremented %O %s from %O to %O"
+        (newVersion, notificationf)
+
+    let AssignVersion version pv =
+        let newVersion = Version version
+        let notificationf = sprintf "Assigned %O %s from %O to %O"
+        (newVersion, notificationf)
+
+    let UpdateVersionsInFile updateAction file =
+        let update (pv:Versioning.ParsedVersion) =
+            let (newVersion, notificationf) = updateAction pv.Version
+            let newText = pv.ToString newVersion
+            let notification =
+                notificationf
+                    (file |> FileSystem.GetRelativePath Environment.CurrentDirectory)
+                    (pv.AttributeType.Name.Replace("Attribute", ""))
+                    pv.Version
+                    newVersion
+            (newText, Some(notification))
+
         let parse text =
-            match Versioning.TryParse text with
-            | None -> (text, None)
-            | Some(pv) ->
-                let newVersion = Versioning.IncrementVersion rank pv.Version
-                let newText = pv.ToString newVersion
-                let notification =
-                    sprintf "Incremented %O %s from %O to %O"
-                        (file |> FileSystem.GetRelativePath Environment.CurrentDirectory)
-                        (pv.AttributeType.Name.Replace("Attribute", ""))
-                        pv.Version
-                        newVersion
-                (newText, Some(notification))
-
-        let writeAllLines file lines =
-            File.WriteAllLines(file, lines, Text.Encoding.UTF8)
-
-        let writeTo file parsedLines =
-            parsedLines |> Array.map fst |> writeAllLines file
-            parsedLines |> Array.choose snd |> Array.iter printn
-
-        File.ReadAllLines file
-        |> Array.map parse
-        |> writeTo file
-
-    let AssignVersionsInFile version file = 
-        let parse text =
-            match Versioning.TryParse text with
-            | None -> (text, None)
-            | Some(pv) ->
-                let newVersion = Version version
-                let newText = pv.ToString newVersion
-                let notification =
-                    sprintf "Assigned %O %s from %O to %O"
-                        (file |> FileSystem.GetRelativePath Environment.CurrentDirectory)
-                        (pv.AttributeType.Name.Replace("Attribute", ""))
-                        pv.Version
-                        newVersion
-                (newText, Some(notification))
+            Versioning.TryParse text
+            |> Option.map update
+            |> Option.fold (fun s t -> t) (text, None)
 
         let writeAllLines file lines =
             File.WriteAllLines(file, lines, Text.Encoding.UTF8)
@@ -121,8 +107,8 @@ module Program =
     [<EntryPoint>]
     let main argv = 
         match argv |> Args.Parse |> Seq.toList with
-        | [Increment(rank)] -> IncrementVersionsInFile rank |> DoInAllAssemblyInfoFiles
-        | [Assign(version)] -> AssignVersionsInFile version |> DoInAllAssemblyInfoFiles
+        | [Increment(rank)] -> IncrementVersion rank |> UpdateVersionsInFile |> DoInAllAssemblyInfoFiles
+        | [Assign(version)] -> AssignVersion version |> UpdateVersionsInFile |> DoInAllAssemblyInfoFiles
         | [ListVersions] -> ListVersionsInFile |> DoInAllAssemblyInfoFiles
         | [ShowHelp] -> ShowUsage()
         | [Unknown(args)] -> PrintUnrecognizedArgs args
