@@ -14,9 +14,6 @@ module Versioning =
         Version : Version
         AttributeType : Type
         ToString : Version -> string }
-        
-    let CreateVersion version = 
-        Version(version)
 
     let IncrementVersion rank (version : Version) =
         match rank with
