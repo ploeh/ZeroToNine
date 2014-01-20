@@ -58,6 +58,27 @@ Zero29 -i patch
 
 Increments the patch version in all `AssemblyInfo.*` files; e.g. from *1.0.1.0* to *1.0.2.0*.
 
+#### Assign
+
+```
+-a <version>
+```
+
+Assigns the specified `version` value to all Assembly Version and Assembly File Version attributes within all `AssemblyInfo.*` files beneath the current working directory.
+
+This can be valuable in different scenarios; for example
+
+- To initiate a completely new code folder with a particular version. For example, by default Visual Studio assigns the version 1.0.0.0 to new C# library projects. In this case, the *assign* operation can be used to set all version information to a common version, e.g. 0.1.0.
+- When adding one or more new projects to a code base, the new projects may not match the existing versions in established projects. The *assign* operation can be used to assign all version values to the (existing) version number.
+
+##### Examples
+
+```
+Zero29 -a 1.3.2
+```
+
+Assigns the version number 1.3.2 to all version attributes in all `AssemblyInfo.*` files. 
+
 #### List
 
 ```
