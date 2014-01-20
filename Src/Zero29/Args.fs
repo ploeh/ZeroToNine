@@ -3,6 +3,7 @@
 open Ploeh.ZeroToNine.Versioning
 
 type Arg =
+    | Assign of string
     | Increment of Rank
     | ListVersions
     | ShowHelp
@@ -12,6 +13,7 @@ module Args =
     let Parse argv =
         match argv |> Seq.toList with
         | ["-l"] -> ListVersions
+        | ["-a"; version] -> Assign(version)
         | ["-i"; "major"] -> Increment(Rank.Major)
         | ["-i"; "minor"] -> Increment(Rank.Minor)
         | ["-i"; "build"] -> Increment(Rank.Build)
@@ -30,6 +32,9 @@ module Args =
             "-i <major|minor|build|patch|revision>"
             "   - Increments the specified component of each"
             "     Assembly Version and Assembly File Version attribute."
+            "-a <version>"
+            "   - Assigns a particular Version to all "
+            "     Assembly Version and Assembly File Version attributes."
             "-l"
             "   - Lists the versions."
             "-? | -h"
