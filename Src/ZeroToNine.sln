@@ -1,6 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{605E0FD8-3AEB-4C46-BBF0-26DCB80240A5}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ZeroToNine.UnitTests", "ZeroToNine.UnitTests\ZeroToNine.UnitTests.fsproj", "{A53B6476-138A-4D7A-92C9-9B3494D827C0}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ZeroToNine", "ZeroToNine\ZeroToNine.fsproj", "{1BBD593B-40E4-4EF0-BC98-2832365A4619}"
@@ -8,11 +15,6 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Zero29", "Zero29\Zero29.fsproj", "{A7CAD8AA-9288-44C4-B700-2CBF70DB56A5}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Zero29.UnitTests", "Zero29.UnitTests\Zero29.UnitTests.fsproj", "{C32C84DA-8220-4308-885C-F16F050F82B8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{605E0FD8-3AEB-4C46-BBF0-26DCB80240A5}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
