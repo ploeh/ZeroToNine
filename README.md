@@ -79,6 +79,7 @@ Zero29 -a 1.3.2
 
 Assigns the version number 1.3.2 to all version attributes in all `AssemblyInfo.*` files. 
 
+<hr />
 
 ```
 -a <major|minor|build|patch|revision> <version number>
