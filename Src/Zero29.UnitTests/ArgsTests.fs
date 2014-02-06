@@ -48,6 +48,16 @@ module ArgsTests =
         Assert.Equal<Arg>([Assign(version)], actual |> Seq.toList)
 
     [<Theory>]
+    [<InlineData("major",    Rank.Major   , "1")>]
+    [<InlineData("minor",    Rank.Minor   , "1")>]
+    [<InlineData("build",    Rank.Build   , "1")>]
+    [<InlineData("patch",    Rank.Build   , "1")>]
+    [<InlineData("revision", Rank.Revision, "1")>]
+    let ParseAssignVersionPartReturnsCorrectResult(rank : string, expectedRank : Rank, value : string) =
+        let actual = [| "-a"; rank; value |] |> Args.Parse
+        Assert.Equal<Arg>([AssignRank(expectedRank, value)], actual |> Seq.toList)
+
+    [<Theory>]
     [<InlineData("major",    Rank.Major)>]
     [<InlineData("minor",    Rank.Minor)>]
     [<InlineData("build",    Rank.Build)>]
