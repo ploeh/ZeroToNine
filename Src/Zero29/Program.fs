@@ -17,9 +17,9 @@ module Program =
         let notificationf = sprintf "Assigned %O %s from %O to %O"
         (newVersion, notificationf)
 
-    let AssignVersionPart rank newValue pv =
-        let newValueNumber = Int32.Parse newValue
-        let newVersion = Versioning.AssignVersion rank pv newValueNumber
+    let AssignVersionPart rank rankValue pv =
+        let rankNumber = Int32.Parse rankValue
+        let newVersion = Versioning.AssignVersionPart rank rankNumber pv 
         let notificationf = sprintf "Assigned %O %s from %O to %O"
         (newVersion, notificationf)
 

@@ -64,12 +64,12 @@ module VersioningTests =
     let AssignVersionReturnsCorrectResult
         (version : string)
         (rank : Rank)
-        (newValue : int)
+        (rankValue : int)
         (exp : string) =
 
         let v = Version.Parse version
         
-        let actual = AssignVersion rank v newValue
+        let actual = AssignVersionPart rank rankValue v 
 
         let expected = Version.Parse exp
         Assert.Equal(expected, actual)
