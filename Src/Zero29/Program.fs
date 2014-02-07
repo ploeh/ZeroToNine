@@ -17,6 +17,11 @@ module Program =
         let notificationf = sprintf "Assigned %O %s from %O to %O"
         (newVersion, notificationf)
 
+    let AssignVersionPart rank rankValue pv =
+        let newVersion = Versioning.AssignVersionPart rank rankValue pv 
+        let notificationf = sprintf "Assigned %O %s from %O to %O"
+        (newVersion, notificationf)
+
     let UpdateVersionsInFile updateAction file =
         let update (pv:Versioning.ParsedVersion) =
             let (newVersion, notificationf) = updateAction pv.Version
@@ -109,6 +114,7 @@ module Program =
         match argv |> Args.Parse |> Seq.toList with
         | [Increment(rank)] -> IncrementVersion rank |> UpdateVersionsInFile |> DoInAllAssemblyInfoFiles
         | [Assign(version)] -> AssignVersion version |> UpdateVersionsInFile |> DoInAllAssemblyInfoFiles
+        | [AssignRank(rank, rankValue)] -> AssignVersionPart rank rankValue |> UpdateVersionsInFile |> DoInAllAssemblyInfoFiles
         | [ListVersions] -> ListVersionsInFile |> DoInAllAssemblyInfoFiles
         | [ShowHelp] -> ShowUsage()
         | [Unknown(args)] -> PrintUnrecognizedArgs args

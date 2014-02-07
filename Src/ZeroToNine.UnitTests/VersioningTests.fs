@@ -39,6 +39,40 @@ module VersioningTests =
 
         let expected = Version.Parse exp
         Assert.Equal(expected, actual)
+
+    [<Theory>]
+    [<InlineData("1.0.0.0", Rank.Major,    2, "2.0.0.0")>]
+    [<InlineData("2.0.0.0", Rank.Major,    3, "3.0.0.0")>]
+    [<InlineData("2.1.0.0", Rank.Major,    3, "3.1.0.0")>]
+    [<InlineData("2.0.1.0", Rank.Major,    3, "3.0.1.0")>]
+    [<InlineData("2.0.0.1", Rank.Major,    3, "3.0.0.1")>]
+    [<InlineData("1.0.0.0", Rank.Minor,    2, "1.2.0.0")>]
+    [<InlineData("2.0.0.0", Rank.Minor,    2, "2.2.0.0")>]
+    [<InlineData("1.1.0.0", Rank.Minor,    2, "1.2.0.0")>]
+    [<InlineData("1.0.1.0", Rank.Minor,    2, "1.2.1.0")>]
+    [<InlineData("1.0.0.1", Rank.Minor,    2, "1.2.0.1")>]
+    [<InlineData("1.0.0.0", Rank.Build,    2, "1.0.2.0")>]
+    [<InlineData("1.0.1.0", Rank.Build,    2, "1.0.2.0")>]
+    [<InlineData("2.0.0.0", Rank.Build,    2, "2.0.2.0")>]
+    [<InlineData("1.1.0.0", Rank.Build,    2, "1.1.2.0")>]
+    [<InlineData("1.0.0.1", Rank.Build,    2, "1.0.2.1")>]
+    [<InlineData("1.0.0.0", Rank.Revision, 2, "1.0.0.2")>]
+    [<InlineData("3.0.0.1", Rank.Revision, 2, "3.0.0.2")>]
+    [<InlineData("2.0.0.0", Rank.Revision, 2, "2.0.0.2")>]
+    [<InlineData("1.1.0.0", Rank.Revision, 2, "1.1.0.2")>]
+    [<InlineData("1.0.1.0", Rank.Revision, 2, "1.0.1.2")>]
+    let AssignVersionReturnsCorrectResult
+        (version : string)
+        (rank : Rank)
+        (rankValue : int)
+        (exp : string) =
+
+        let v = Version.Parse version
+        
+        let actual = AssignVersionPart rank rankValue v 
+
+        let expected = Version.Parse exp
+        Assert.Equal(expected, actual)
     
     [<Theory>]
     [<InlineData("")>]

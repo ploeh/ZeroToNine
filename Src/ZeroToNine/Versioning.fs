@@ -15,6 +15,17 @@ module Versioning =
         AttributeType : Type
         ToString : Version -> string }
 
+    let AssignVersionPart rank rankValue (version : Version)  =
+        match rank with
+        | Rank.Major ->
+            Version(rankValue, version.Minor, version.Build, version.Revision)
+        | Rank.Minor ->
+            Version(version.Major, rankValue, version.Build, version.Revision)
+        | Rank.Build ->
+            Version(version.Major, version.Minor, rankValue, version.Revision)
+        | _ ->
+            Version(version.Major, version.Minor, version.Build, rankValue)
+
     let IncrementVersion rank (version : Version) =
         match rank with
         | Rank.Major ->
