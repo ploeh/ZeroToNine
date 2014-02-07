@@ -1,5 +1,6 @@
 ﻿namespace Ploeh.ZeroToNine.UnitTests
 
+open System
 open Ploeh.ZeroToNine
 open Ploeh.ZeroToNine.Versioning
 open Xunit
@@ -48,14 +49,14 @@ module ArgsTests =
         Assert.Equal<Arg>([Assign(version)], actual |> Seq.toList)
 
     [<Theory>]
-    [<InlineData("major",    Rank.Major   , "1")>]
-    [<InlineData("minor",    Rank.Minor   , "1")>]
-    [<InlineData("build",    Rank.Build   , "1")>]
-    [<InlineData("patch",    Rank.Build   , "1")>]
-    [<InlineData("revision", Rank.Revision, "1")>]
-    let ParseAssignVersionPartReturnsCorrectResult(rank : string, expectedRank : Rank, value : string) =
-        let actual = [| "-a"; rank; value |] |> Args.Parse
-        Assert.Equal<Arg>([AssignRank(expectedRank, value)], actual |> Seq.toList)
+    [<InlineData("major",    "1", Rank.Major,    1)>]
+    [<InlineData("minor",    "1", Rank.Minor,    1)>]
+    [<InlineData("build",    "1", Rank.Build,    1)>]
+    [<InlineData("patch",    "1", Rank.Build,    1)>]
+    [<InlineData("revision", "1", Rank.Revision, 1)>]
+    let ParseAssignVersionPartReturnsCorrectResult(rank : string, rankValue : string, expectedRank : Rank, expectedRankValue : int) =
+        let actual = [| "-a"; rank; rankValue |] |> Args.Parse
+        Assert.Equal<Arg>([AssignRank(expectedRank, expectedRankValue)], actual |> Seq.toList)
 
     [<Theory>]
     [<InlineData("major",    Rank.Major)>]
@@ -86,6 +87,11 @@ module ArgsTests =
 
     [<Theory>]
     [<InlineData("-a")>]
+    [<InlineData("-a major foo")>]
+    [<InlineData("-a minor foo")>]
+    [<InlineData("-a build foo")>]
+    [<InlineData("-a patch foo")>]
+    [<InlineData("-a revision foo")>]
     [<InlineData("-c ")>]
     [<InlineData("-c b")>]
     [<InlineData("-h b")>]

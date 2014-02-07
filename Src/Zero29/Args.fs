@@ -1,16 +1,23 @@
 ﻿namespace Ploeh.ZeroToNine
 
+open System
 open Ploeh.ZeroToNine.Versioning
 
 type Arg =
     | Assign of string
-    | AssignRank of Rank * string
+    | AssignRank of Rank * int
     | Increment of Rank
     | ListVersions
     | ShowHelp
     | Unknown of string list
 
 module Args =
+
+    let (|IsInteger|_|) (str:string) = 
+        match Int32.TryParse (str) with
+        | (true, n) -> Some(n)
+        | (false, _) -> None
+
     let Parse argv =
         match argv |> Seq.toList with
         | ["-l"] -> ListVersions
@@ -20,11 +27,11 @@ module Args =
         | ["-i"; "build"] -> Increment(Rank.Build)
         | ["-i"; "patch"] -> Increment(Rank.Build)
         | ["-i"; "revision"] -> Increment(Rank.Revision)        
-        | ["-a"; "major"; rankValue] -> AssignRank(Rank.Major, rankValue)
-        | ["-a"; "minor"; rankValue] -> AssignRank(Rank.Minor, rankValue)
-        | ["-a"; "build"; rankValue] -> AssignRank(Rank.Build, rankValue)
-        | ["-a"; "patch"; rankValue] -> AssignRank(Rank.Build, rankValue)
-        | ["-a"; "revision"; rankValue] -> AssignRank(Rank.Revision, rankValue)
+        | ["-a"; "major"; IsInteger rankValue] -> AssignRank(Rank.Major, rankValue)
+        | ["-a"; "minor"; IsInteger rankValue] -> AssignRank(Rank.Minor, rankValue)
+        | ["-a"; "build"; IsInteger rankValue] -> AssignRank(Rank.Build, rankValue)
+        | ["-a"; "patch"; IsInteger rankValue] -> AssignRank(Rank.Build, rankValue)
+        | ["-a"; "revision"; IsInteger rankValue] -> AssignRank(Rank.Revision, rankValue)
         | ["-?"] -> ShowHelp
         | ["-h"] -> ShowHelp
         | [] -> ShowHelp
