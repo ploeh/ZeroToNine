@@ -54,6 +54,11 @@ module ArgsTests =
     [<InlineData("build",    "1", Rank.Build,    1)>]
     [<InlineData("patch",    "1", Rank.Build,    1)>]
     [<InlineData("revision", "1", Rank.Revision, 1)>]
+    [<InlineData("major",    "0", Rank.Major,    0)>]
+    [<InlineData("minor",    "0", Rank.Minor,    0)>]
+    [<InlineData("build",    "0", Rank.Build,    0)>]
+    [<InlineData("patch",    "0", Rank.Build,    0)>]
+    [<InlineData("revision", "0", Rank.Revision, 0)>]
     let ParseAssignVersionPartReturnsCorrectResult(rank : string, rankValue : string, expectedRank : Rank, expectedRankValue : int) =
         let actual = [| "-a"; rank; rankValue |] |> Args.Parse
         Assert.Equal<Arg>([AssignRank(expectedRank, expectedRankValue)], actual |> Seq.toList)
@@ -92,6 +97,11 @@ module ArgsTests =
     [<InlineData("-a build foo")>]
     [<InlineData("-a patch foo")>]
     [<InlineData("-a revision foo")>]
+    [<InlineData("-a major -1")>]
+    [<InlineData("-a minor -1")>]
+    [<InlineData("-a build -1")>]
+    [<InlineData("-a patch -1")>]
+    [<InlineData("-a revision -1")>]
     [<InlineData("-c ")>]
     [<InlineData("-c b")>]
     [<InlineData("-h b")>]

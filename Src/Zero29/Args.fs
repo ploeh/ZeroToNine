@@ -13,9 +13,11 @@ type Arg =
 
 module Args =
 
-    let (|IsInteger|_|) (str:string) = 
+    let private (|IntegerGreaterThanOrEqualToZero|_|) (str:string) = 
         match Int32.TryParse (str) with
-        | (true, n) -> Some(n)
+        | (true, n) -> match n with 
+                       | n when n >= 0 -> Some(n) 
+                       | _ -> None
         | (false, _) -> None
 
     let Parse argv =
@@ -27,11 +29,11 @@ module Args =
         | ["-i"; "build"] -> Increment(Rank.Build)
         | ["-i"; "patch"] -> Increment(Rank.Build)
         | ["-i"; "revision"] -> Increment(Rank.Revision)        
-        | ["-a"; "major"; IsInteger rankValue] -> AssignRank(Rank.Major, rankValue)
-        | ["-a"; "minor"; IsInteger rankValue] -> AssignRank(Rank.Minor, rankValue)
-        | ["-a"; "build"; IsInteger rankValue] -> AssignRank(Rank.Build, rankValue)
-        | ["-a"; "patch"; IsInteger rankValue] -> AssignRank(Rank.Build, rankValue)
-        | ["-a"; "revision"; IsInteger rankValue] -> AssignRank(Rank.Revision, rankValue)
+        | ["-a"; "major"; IntegerGreaterThanOrEqualToZero rankValue] -> AssignRank(Rank.Major, rankValue)
+        | ["-a"; "minor"; IntegerGreaterThanOrEqualToZero rankValue] -> AssignRank(Rank.Minor, rankValue)
+        | ["-a"; "build"; IntegerGreaterThanOrEqualToZero rankValue] -> AssignRank(Rank.Build, rankValue)
+        | ["-a"; "patch"; IntegerGreaterThanOrEqualToZero rankValue] -> AssignRank(Rank.Build, rankValue)
+        | ["-a"; "revision"; IntegerGreaterThanOrEqualToZero rankValue] -> AssignRank(Rank.Revision, rankValue)
         | ["-?"] -> ShowHelp
         | ["-h"] -> ShowHelp
         | [] -> ShowHelp
