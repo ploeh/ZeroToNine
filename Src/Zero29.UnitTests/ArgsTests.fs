@@ -8,6 +8,10 @@ open Xunit.Extensions
 
 module ArgsTests =
     [<Theory>]
+    [<InlineData("0.5")>]
+    [<InlineData("3.1")>]    
+    [<InlineData("1.1.0")>]
+    [<InlineData("2.0.4")>]
     [<InlineData("1.0.0.0")>]
     [<InlineData("1.1.0.0")>]
     [<InlineData("1.0.1.0")>]
