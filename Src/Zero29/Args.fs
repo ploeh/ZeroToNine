@@ -4,7 +4,7 @@ open System
 open Ploeh.ZeroToNine.Versioning
 
 type Arg =
-    | Assign of string
+    | Assign of Version
     | AssignRank of Rank * int
     | Increment of Rank
     | ListVersions
@@ -12,6 +12,11 @@ type Arg =
     | Unknown of string list
 
 module Args =
+
+    let private (|IsProperVersionString|_|) candidate =
+        match Version.TryParse candidate with
+        | (true, version) -> Some version
+        | _ -> None
 
     let private (|IntegerGreaterThanOrEqualToZero|_|) (str:string) = 
         match Int32.TryParse (str) with
@@ -23,7 +28,7 @@ module Args =
     let Parse argv =
         match argv |> Seq.toList with
         | ["-l"] -> ListVersions
-        | ["-a"; version] -> Assign(version)
+        | ["-a"; IsProperVersionString version] -> Assign(version)
         | ["-i"; "major"] -> Increment(Rank.Major)
         | ["-i"; "minor"] -> Increment(Rank.Minor)
         | ["-i"; "build"] -> Increment(Rank.Build)

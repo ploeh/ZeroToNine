@@ -46,7 +46,7 @@ module ArgsTests =
     [<InlineData("9.0.0.9")>]
     let ParseAssignVersionReturnsCorrectResult(version : string) =
         let actual = [| "-a"; version |] |> Args.Parse
-        Assert.Equal<Arg>([Assign(version)], actual |> Seq.toList)
+        Assert.Equal<Arg>([Assign(Version version)], actual |> Seq.toList)
 
     [<Theory>]
     [<InlineData("major",    "1", Rank.Major,    1)>]
@@ -92,6 +92,8 @@ module ArgsTests =
 
     [<Theory>]
     [<InlineData("-a")>]
+    [<InlineData("-a foo")>]
+    [<InlineData("-a bar")>]
     [<InlineData("-a major foo")>]
     [<InlineData("-a minor foo")>]
     [<InlineData("-a build foo")>]
