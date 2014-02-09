@@ -18,12 +18,10 @@ module Args =
         | (true, version) -> Some version
         | _ -> None
 
-    let private (|IntegerGreaterThanOrEqualToZero|_|) (str:string) = 
-        match Int32.TryParse (str) with
-        | (true, n) -> match n with 
-                       | n when n >= 0 -> Some(n) 
-                       | _ -> None
-        | (false, _) -> None
+    let private (|IntegerGreaterThanOrEqualToZero|_|) candidate =
+        match Int32.TryParse candidate with
+        | (true, n) when n >= 0 -> Some(n)
+        | _ -> None
 
     let Parse argv =
         match argv |> Seq.toList with
