@@ -20,18 +20,18 @@ module Args =
 
     let private (|IntegerGreaterThanOrEqualToZero|_|) candidate =
         match Int32.TryParse candidate with
-        | (true, n) when n >= 0 -> Some(n)
+        | (true, n) when n >= 0 -> Some n
         | _ -> None
 
     let Parse argv =
         match argv |> Seq.toList with
         | ["-l"] -> ListVersions
-        | ["-a"; IsProperVersionString version] -> Assign(version)
-        | ["-i"; "major"] -> Increment(Rank.Major)
-        | ["-i"; "minor"] -> Increment(Rank.Minor)
-        | ["-i"; "build"] -> Increment(Rank.Build)
-        | ["-i"; "patch"] -> Increment(Rank.Build)
-        | ["-i"; "revision"] -> Increment(Rank.Revision)        
+        | ["-a"; IsProperVersionString version] -> Assign version
+        | ["-i"; "major"] -> Increment Rank.Major
+        | ["-i"; "minor"] -> Increment Rank.Minor
+        | ["-i"; "build"] -> Increment Rank.Build
+        | ["-i"; "patch"] -> Increment Rank.Build
+        | ["-i"; "revision"] -> Increment Rank.Revision
         | ["-a"; "major"; IntegerGreaterThanOrEqualToZero rankValue] -> AssignRank(Rank.Major, rankValue)
         | ["-a"; "minor"; IntegerGreaterThanOrEqualToZero rankValue] -> AssignRank(Rank.Minor, rankValue)
         | ["-a"; "build"; IntegerGreaterThanOrEqualToZero rankValue] -> AssignRank(Rank.Build, rankValue)
