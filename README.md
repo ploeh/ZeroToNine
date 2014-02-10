@@ -79,13 +79,13 @@ Zero29 -a 1.3.2
 
 Assigns the version number 1.3.2 to all version attributes in all `AssemblyInfo.*` files. 
 
-<hr />
+#### Assign version component
 
 ```
 -a <major|minor|build|patch|revision> <version number>
 ```
 
-Assigns a particular version number to a specified part of the existing version of all Assembly Version and Assembly File Version attributes within all `AssemblyInfo.*` files beneath the current working directory.
+Assigns a particular version number to a specified component (major, minor, etc.) of the existing version of all Assembly Version and Assembly File Version attributes within all `AssemblyInfo.*` files beneath the current working directory.
 
 This allows for explicit control over the individual parts of a version and enables scenarios whereby a development team may want explicit control over certain version parts such as major and minor, but allow a Continuous Integration (CI) server to set the build part (for example, to be able to link a deployed version of an application with the CI server build).
 
