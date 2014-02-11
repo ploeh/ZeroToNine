@@ -6,6 +6,8 @@ open Xunit.Extensions
 
 module FileSystemTests =
     open Ploeh.ZeroToNine.FileSystem
+
+    let private verify = Swensen.Unquote.Assertions.test
     
     [<Theory>]
     [<InlineData(@"C:\foo", @"C:\foo\bar", @".\bar")>]
@@ -21,5 +23,4 @@ module FileSystemTests =
         (expected : string) =
 
         let actual = GetRelativePath workingDirectory path
-        Assert.Equal<string>(expected, actual)
-
+        verify <@ expected = actual @>

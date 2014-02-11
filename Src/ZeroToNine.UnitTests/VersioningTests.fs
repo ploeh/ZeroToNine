@@ -7,6 +7,8 @@ open Xunit.Extensions
 module VersioningTests =
     open Ploeh.ZeroToNine.Versioning
 
+    let private verify = Swensen.Unquote.Assertions.test
+
     [<Theory>]
     [<InlineData("1.0.0.0", Rank.Major,    "2.0.0.0")>]
     [<InlineData("2.0.0.0", Rank.Major,    "3.0.0.0")>]
@@ -38,7 +40,7 @@ module VersioningTests =
         let actual = IncrementVersion rank v
 
         let expected = Version.Parse exp
-        Assert.Equal(expected, actual)
+        verify <@ expected = actual @>
 
     [<Theory>]
     [<InlineData("1.0.0.0", Rank.Major,    2, "2.0.0.0")>]
@@ -72,14 +74,14 @@ module VersioningTests =
         let actual = AssignVersionPart rank rankValue v 
 
         let expected = Version.Parse exp
-        Assert.Equal(expected, actual)
+        verify <@ expected = actual @>
     
     [<Theory>]
     [<InlineData("")>]
     [<InlineData("ploeh")>]
     let TryParseNoVersionInformationReturnsNone(text : string) =
         let actual = TryParse text
-        Assert.Equal(None, actual)
+        verify <@ actual.IsNone @>
 
     [<Theory>]
     [<InlineData("""[assembly:AssemblyVersion("1.0")]""", "1.0")>]
@@ -126,9 +128,9 @@ module VersioningTests =
 
         let actual = TryParse text
 
-        let expected = Version(expectedS)
-        Assert.True actual.IsSome
-        Assert.Equal(expected, actual.Value.Version)
+        let expected = Version expectedS
+        verify <@ actual.IsSome @>
+        verify <@ expected = actual.Value.Version @>
 
     [<Theory>]
     [<InlineData("""[assembly:AssemblyVersion("1.0")]""", """[assembly:AssemblyVersion("2.0.0.0")]""", "2.0.0.0")>]
@@ -176,7 +178,7 @@ module VersioningTests =
         (expected : string)
         (newVersion : string) =
         let actual = (TryParse text).Value.ToString (Version(newVersion))
-        Assert.Equal<string>(expected, actual)
+        verify <@ expected = actual @>
 
     [<Theory>]
     [<InlineData("""[assembly:AssemblyVersion("1.0")]""", typeof<System.Reflection.AssemblyVersionAttribute>)>]
@@ -222,4 +224,4 @@ module VersioningTests =
         (expected : Type) =
 
         let actual = (TryParse text).Value.AttributeType
-        Assert.Equal(expected, actual)
+        verify <@ expected = actual @>
