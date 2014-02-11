@@ -7,6 +7,8 @@ open Xunit
 open Xunit.Extensions
 
 module ArgsTests =
+    let private verify = Swensen.Unquote.Assertions.test
+
     [<Theory>]
     [<InlineData("0.5")>]
     [<InlineData("3.1")>]    
@@ -50,7 +52,7 @@ module ArgsTests =
     [<InlineData("9.0.0.9")>]
     let ParseAssignVersionReturnsCorrectResult(version : string) =
         let actual = [| "-a"; version |] |> Args.Parse
-        Assert.Equal<Arg>([Assign(Version version)], actual |> Seq.toList)
+        verify <@ [Assign(Version version)] = (actual |> Seq.toList) @>
 
     [<Theory>]
     [<InlineData("major",    "1", Rank.Major,    1)>]
@@ -65,7 +67,7 @@ module ArgsTests =
     [<InlineData("revision", "0", Rank.Revision, 0)>]
     let ParseAssignVersionPartReturnsCorrectResult(rank : string, rankValue : string, expectedRank : Rank, expectedRankValue : int) =
         let actual = [| "-a"; rank; rankValue |] |> Args.Parse
-        Assert.Equal<Arg>([AssignRank(expectedRank, expectedRankValue)], actual |> Seq.toList)
+        verify <@ [AssignRank(expectedRank, expectedRankValue)] = (actual |> Seq.toList) @>
 
     [<Theory>]
     [<InlineData("major",    Rank.Major)>]
@@ -75,24 +77,24 @@ module ArgsTests =
     [<InlineData("revision", Rank.Revision)>]
     let ParseIncementReturnsCorrectResult(rank : string, expectedRank : Rank) =
         let actual = [| "-i"; rank |] |> Args.Parse
-        Assert.Equal<Arg>([Increment(expectedRank)], actual |> Seq.toList)
+        verify <@ [Increment(expectedRank)] = (actual |> Seq.toList) @>
 
     [<Fact>]
     let ParseListVersion() =
         let actual = [| "-l" |] |> Args.Parse
-        Assert.Equal<Arg>([ListVersions], actual |> Seq.toList)
+        verify <@ [ListVersions] = (actual |> Seq.toList) @>
 
     [<Theory>]
     [<InlineData("-?")>]
     [<InlineData("-h")>]
     let ParseHelpArgsReturnsShowHelp(switch : string) =
         let actual = [| switch |] |> Args.Parse
-        Assert.Equal<Arg>([ShowHelp], actual |> Seq.toList)
+        verify <@ [ShowHelp] = (actual |> Seq.toList) @>
 
     [<Fact>]
     let ParseEmptyArgsReturnsShowHelp() =
         let actual = [| |] |> Args.Parse
-        Assert.Equal<Arg>([ShowHelp], actual |> Seq.toList)
+        verify <@ [ShowHelp] = (actual |> Seq.toList) @>
 
     [<Theory>]
     [<InlineData("-a")>]
@@ -120,4 +122,4 @@ module ArgsTests =
     let ParseUnknownArgsReturnsCorrectResult(argString : string) =
         let args = argString.Split() |> Array.toList
         let actual = args |> Args.Parse
-        Assert.Equal<Arg>([Unknown(args)], actual |> Seq.toList)
+        verify <@ [Unknown(args)] = (actual |> Seq.toList) @>
