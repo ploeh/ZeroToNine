@@ -16,7 +16,11 @@ While *Zero29* is the raison d'être for the *ZeroToNine* project, this organiza
 Signed versions of both *Zero29* and *ZeroToNine* are available via NuGet:
 
 - [Zero29](https://www.nuget.org/packages/Zero29)
-- [ZeroToNine](https://www.nuget.org/packages/ZeroToNine) 
+- [ZeroToNine](https://www.nuget.org/packages/ZeroToNine)
+
+### Versioning
+
+ZeroToNine follows [Semantic Versioning 2.0.0](http://semver.org/spec/v2.0.0.html). 
 
 ## Command-line usage
 
