@@ -18,5 +18,6 @@
     <file src="Zero29.XML" target="tools" />
     <file src="Ploeh.ZeroToNine.dll" target="tools" />
     <file src="Ploeh.ZeroToNine.XML" target="tools" />
+    <file src="FSharp.Core.dll" target="tools" />
   </files>
 </package>
