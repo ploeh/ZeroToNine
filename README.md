@@ -35,6 +35,7 @@ Zero29 <command> [<args>]
 The following commands are available:
 
 - Increment
+- Assign
 - List
 - Help
 
