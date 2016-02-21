@@ -11,11 +11,13 @@ function abspath()
 
 function vsvers()
 {
-	if [ "$VS120COMNTOOLS" ]; then
-		echo " /property:VisualStudioVersion=12.0"
-	else
-		echo ""
-	fi
+        if [ "$VS140COMNTOOLS" ]; then
+                echo " /property:VisualStudioVersion=14.0"
+        elif [ "$VS120COMNTOOLS" ]; then
+                echo " /property:VisualStudioVersion=12.0"
+        else
+                echo ""
+        fi
 }
 
 if [ "$1" != "" ]; then
